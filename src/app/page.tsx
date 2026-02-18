@@ -16,7 +16,7 @@ export default function Home() {
             <a href="#war" className="hover:text-[var(--text)]">War Room</a>
             <a href="#contact" className="hover:text-[var(--text)]">Contact</a>
             <a
-              href="/resume.pdf"
+              href="/Pranav_Resume_W26.pdf"
               className="rounded-md border border-[var(--border)] px-3 py-1.5 text-[var(--text)] hover:border-[var(--accent)]"
             >
               Resume
