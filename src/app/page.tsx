@@ -10,7 +10,7 @@ export default function Home() {
       {/* Nav */}
       <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[color:var(--bg)/0.8] backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
-          <div className="font-semibold tracking-tight">PBhat</div>
+          <div className="font-semibold tracking-tight">Pranav Bhat</div>
           <nav className="flex items-center gap-4 text-sm text-[var(--muted)]">
             <a href="#build" className="hover:text-[var(--text)]">Build Room</a>
             <a href="#war" className="hover:text-[var(--text)]">War Room</a>
@@ -31,15 +31,15 @@ export default function Home() {
           <div>
             <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-[var(--muted)]">
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-              Seeking Summer 2026 • Data / Systems / SWE
+              Seeking Summer 2026 Internships • Data / Systems / SWE
             </p>
 
             <h1 className="text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
-              I build data + systems that ship.
+              I build data and systems that ship.
             </h1>
 
             <p className="mt-4 text-base leading-relaxed text-[var(--muted)]">
-              Systems Design @ University of Waterloo. I like turning messy inputs into reliable outputs —
+              Systems Design @ University of Waterloo. I like turning messy inputs into reliable outputs with
               fast iteration, measurable results, clean execution.
             </p>
 
@@ -51,7 +51,7 @@ export default function Home() {
                 Download Resume
               </a>
               <a
-                href="https://github.com/"
+                href="https://github.com/bhat-pranav"
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium hover:border-[var(--accent)]"
@@ -59,7 +59,7 @@ export default function Home() {
                 GitHub
               </a>
               <a
-                href="https://www.linkedin.com/"
+                href="https://www.linkedin.com/in/pranav-bhat-uw/"
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium hover:border-[var(--accent)]"
@@ -82,7 +82,7 @@ export default function Home() {
                 <span className="font-medium">Data • Systems • Full-stack</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[var(--muted)]">Next Ship</span>
+                <span className="text-[var(--muted)]">Coming Up</span>
                 <span className="font-medium">Job Market Dashboard (WIP)</span>
               </div>
             </div>
@@ -94,7 +94,7 @@ export default function Home() {
       <section className="mx-auto max-w-5xl px-5 pb-12">
         <div className="flex flex-wrap gap-2">
           {[
-            "Seeking: Summer 2026",
+            "Seeking: Summer 2026 Internships",
             "Focus: Data • Systems • SWE",
             "Loop: Build → Measure → Iterate",
           ].map((t) => (
@@ -143,10 +143,10 @@ export default function Home() {
               ))}
             </div>
             <div className="mt-4 flex gap-3 text-sm">
-              <a className="text-[var(--accent)] hover:underline" href="#">
+              <a className="text-[var(--accent)] hover:underline">
                 Repo (soon)
               </a>
-              <a className="text-[var(--accent)] hover:underline" href="#">
+              <a className="text-[var(--accent)] hover:underline">
                 Live (soon)
               </a>
             </div>
@@ -218,17 +218,17 @@ export default function Home() {
         <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-7">
           <h2 className="text-2xl font-semibold tracking-tight">Let’s talk.</h2>
           <p className="mt-2 text-[var(--muted)]">
-            If you need someone who can own messy problems end-to-end—build, measure, iterate—reach out.
+            If you need someone who can own messy problems end-to-end; build, measure & iterate, reach out.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <a
-              href="mailto:you@example.com"
+              href="mailto:pranav2bhat@gmail.com"
               className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--bg)] hover:opacity-90"
             >
               Email
             </a>
             <a
-              href="https://www.linkedin.com/"
+              href="https://www.linkedin.com/in/pranav-bhat-uw/"
               target="_blank"
               rel="noreferrer"
               className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium hover:border-[var(--accent)]"
@@ -236,7 +236,7 @@ export default function Home() {
               LinkedIn
             </a>
             <a
-              href="https://github.com/"
+              href="https://github.com/bhat-pranav"
               target="_blank"
               rel="noreferrer"
               className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium hover:border-[var(--accent)]"
@@ -248,7 +248,7 @@ export default function Home() {
       </section>
 
       <footer className="mx-auto max-w-5xl px-5 pb-10 pt-6 text-xs text-[var(--muted)]">
-        © {new Date().getFullYear()} PBhat • Built Room / War Room
+        © {new Date().getFullYear()} Pranav Bhat • Built Room / War Room
       </footer>
     </main>
   );
