@@ -29,11 +29,6 @@ export default function Home() {
       <section className="mx-auto max-w-5xl px-5 pt-16 pb-10">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
           <div>
-            <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-xs text-[var(--muted)]">
-              <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-              Seeking Summer 2026 Internships • Data / Systems / SWE
-            </p>
-
             <h1 className="text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
               I build data and systems that ship.
             </h1>
@@ -94,7 +89,7 @@ export default function Home() {
       <section className="mx-auto max-w-5xl px-5 pb-12">
         <div className="flex flex-wrap gap-2">
           {[
-            "Seeking: Summer 2026 Internships",
+            "Seeking: Winter 2027 Internships",
             "Focus: Data • Systems • SWE",
             "Loop: Build → Measure → Iterate",
           ].map((t) => (
