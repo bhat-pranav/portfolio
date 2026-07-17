@@ -26,19 +26,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </span>
         ))}
       </div>
-      {project.links && project.links.length > 0 ? (
-        <div className="mt-4 flex gap-3 text-sm">
-          {project.links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-[var(--accent)] hover:underline"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      ) : null}
     </div>
   );
 }

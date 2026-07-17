@@ -7,9 +7,6 @@ export function SiteNav() {
           <a href="#build" className="hover:text-[var(--text)]">
             Build Room
           </a>
-          <a href="#war" className="hover:text-[var(--text)]">
-            War Room
-          </a>
           <a href="#contact" className="hover:text-[var(--text)]">
             Contact
           </a>

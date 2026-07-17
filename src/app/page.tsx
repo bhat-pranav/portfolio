@@ -1,9 +1,8 @@
-import { ContactSection } from "@/components/ContactSection";
-import { Hero } from "@/components/Hero";
-import { ProjectsSection } from "@/components/ProjectsSection";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteNav } from "@/components/SiteNav";
-import { WarRoomSection } from "@/components/WarRoomSection";
+import { ContactSection } from "@/components/contact-section";
+import { Hero } from "@/components/hero";
+import { ProjectsSection } from "@/components/projects-section";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteNav } from "@/components/site-nav";
 
 export default function Home() {
   return (
@@ -16,7 +15,6 @@ export default function Home() {
       <SiteNav />
       <Hero />
       <ProjectsSection />
-      <WarRoomSection />
       <ContactSection />
       <SiteFooter />
     </main>

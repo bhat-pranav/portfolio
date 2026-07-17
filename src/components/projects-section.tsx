@@ -1,5 +1,5 @@
-import { ProjectCard } from "@/components/ProjectCard";
-import { SectionHeader } from "@/components/SectionHeader";
+import { ProjectCard } from "@/components/project-card";
+import { SectionHeader } from "@/components/section-header";
 import { projects } from "@/data/projects";
 
 export function ProjectsSection() {

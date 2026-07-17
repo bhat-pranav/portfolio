@@ -4,8 +4,9 @@ export function ContactSection() {
       <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-7">
         <h2 className="text-2xl font-semibold tracking-tight">Let’s talk.</h2>
         <p className="mt-2 text-[var(--muted)]">
-          If you need someone who can own messy problems end-to-end; build, measure & iterate, reach
-          out.
+          I’m seeking Winter 2027 co-op roles in data, solutions and AI implementation. I’m
+          particularly interested in teams building tools around real customer or operational
+          workflows.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <a

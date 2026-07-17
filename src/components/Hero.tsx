@@ -9,8 +9,8 @@ export function Hero() {
             </h1>
 
             <p className="mt-4 text-base leading-relaxed text-[var(--muted)]">
-              Systems Design @ University of Waterloo. I like turning messy inputs into reliable
-              outputs with fast iteration, measurable results, clean execution.
+              Systems Design Engineering @ University of Waterloo. I like turning messy inputs into
+              reliable outputs with fast iteration and measurable results.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -48,7 +48,7 @@ export function Hero() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-[var(--muted)]">Focus</span>
-                <span className="font-medium">Data • Systems • Full-stack</span>
+                <span className="font-medium">Data • Systems</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-[var(--muted)]">Coming Up</span>
@@ -61,11 +61,7 @@ export function Hero() {
 
       <section className="mx-auto max-w-5xl px-5 pb-12">
         <div className="flex flex-wrap gap-2">
-          {[
-            "Seeking: Winter 2027 Internships",
-            "Focus: Data • Systems • SWE",
-            "Loop: Build → Measure → Iterate",
-          ].map((t) => (
+          {["Seeking: Winter 2027 Internships", "Focus: Data • Systems"].map((t) => (
             <span
               key={t}
               className="rounded-full border border-[var(--border)] bg-[var(--panel)] px-3 py-1 text-xs text-[var(--muted)]"
