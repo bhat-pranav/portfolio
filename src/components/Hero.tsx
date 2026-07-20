@@ -1,7 +1,4 @@
-import Link from "next/link";
-
-const secondaryCtaClassName =
-  "inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium hover:border-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]";
+import { ButtonLink } from "@/components/button-link";
 
 export function Hero() {
   return (
@@ -24,23 +21,19 @@ export function Hero() {
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href="/#projects"
-            className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--bg)] hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
-          >
+          <ButtonLink href="/#projects" variant="primary">
             View Projects
-          </Link>
-          <a href="/Pranav_Resume_W26.pdf" className={secondaryCtaClassName}>
+          </ButtonLink>
+          <ButtonLink href="/Pranav_Resume_W26.pdf" variant="secondary" external>
             Resume
-          </a>
-          <a
+          </ButtonLink>
+          <ButtonLink
             href="https://github.com/bhat-pranav"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={secondaryCtaClassName}
+            variant="secondary"
+            external
           >
             GitHub
-          </a>
+          </ButtonLink>
         </div>
 
         <p className="mt-5 text-sm text-[var(--muted)]">

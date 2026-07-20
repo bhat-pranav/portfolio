@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ButtonLink } from "@/components/button-link";
 import type { CaseStudy } from "@/types/case-study";
 import type { ReactNode } from "react";
 
@@ -105,9 +106,6 @@ function SectionBody({ section }: { section: SectionDef }) {
   );
 }
 
-const ctaClassName =
-  "inline-flex min-h-11 items-center justify-center rounded-md px-4 py-2 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]";
-
 export function CaseStudyView({ study }: CaseStudyViewProps) {
   const meta = metadataItems(study);
   const statusIsLive = study.status?.toLowerCase() === "live";
@@ -207,24 +205,14 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
         {study.liveUrl || study.repositoryUrl ? (
           <div className="mt-6 flex flex-wrap gap-3">
             {study.liveUrl ? (
-              <a
-                href={study.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${ctaClassName} bg-[var(--accent)] text-[var(--bg)] hover:opacity-90`}
-              >
+              <ButtonLink href={study.liveUrl} variant="primary" external>
                 View Live
-              </a>
+              </ButtonLink>
             ) : null}
             {study.repositoryUrl ? (
-              <a
-                href={study.repositoryUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${ctaClassName} border border-[var(--border)] hover:border-[var(--accent)]`}
-              >
+              <ButtonLink href={study.repositoryUrl} variant="secondary" external>
                 View Repository
-              </a>
+              </ButtonLink>
             ) : null}
           </div>
         ) : null}

@@ -1,7 +1,6 @@
-export function ContactSection() {
-  const buttonClassName =
-    "inline-flex min-h-11 items-center justify-center rounded-md px-4 py-2 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]";
+import { ButtonLink } from "@/components/button-link";
 
+export function ContactSection() {
   return (
     <section
       id="contact"
@@ -18,28 +17,23 @@ export function ContactSection() {
           workflows.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <a
-            href="mailto:pranav2bhat@gmail.com"
-            className={`${buttonClassName} bg-[var(--accent)] text-[var(--bg)] hover:opacity-90`}
-          >
+          <ButtonLink href="mailto:pranav2bhat@gmail.com" variant="primary">
             Email
-          </a>
-          <a
+          </ButtonLink>
+          <ButtonLink
             href="https://www.linkedin.com/in/pranav-bhat-uw/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${buttonClassName} border border-[var(--border)] hover:border-[var(--accent)]`}
+            variant="secondary"
+            external
           >
             LinkedIn
-          </a>
-          <a
+          </ButtonLink>
+          <ButtonLink
             href="https://github.com/bhat-pranav"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${buttonClassName} border border-[var(--border)] hover:border-[var(--accent)]`}
+            variant="secondary"
+            external
           >
             GitHub
-          </a>
+          </ButtonLink>
         </div>
       </div>
     </section>
