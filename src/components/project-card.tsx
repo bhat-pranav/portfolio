@@ -12,48 +12,22 @@ function hasProgress(
   return Boolean(progress?.currentStage || progress?.nextMilestone);
 }
 
-const actionClassName =
-  "inline-flex min-h-10 items-center text-[var(--accent)] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]";
+const cardSurfaceClassName =
+  "overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--panel)]";
 
-export function ProjectCard({ project }: ProjectCardProps) {
+function ProjectCardContent({
+  project,
+  showCaseStudyHint,
+}: {
+  project: Project;
+  showCaseStudyHint: boolean;
+}) {
   const isFeatured = Boolean(project.featured);
-  const liveLabel = project.liveActionLabel ?? "View Live";
-
-  const actions = [
-    project.liveUrl
-      ? {
-          href: project.liveUrl,
-          label: liveLabel,
-          external: /^https?:\/\//.test(project.liveUrl),
-        }
-      : null,
-    project.repositoryUrl
-      ? {
-          href: project.repositoryUrl,
-          label: "View Repository",
-          external: /^https?:\/\//.test(project.repositoryUrl),
-        }
-      : null,
-    project.caseStudyUrl
-      ? {
-          href: project.caseStudyUrl,
-          label: "Read Case Study",
-          external: /^https?:\/\//.test(project.caseStudyUrl),
-        }
-      : null,
-  ].filter((action): action is { href: string; label: string; external: boolean } =>
-    Boolean(action),
-  );
-
   const showProgress = hasProgress(project.progress);
   const statusIsLive = project.status.toLowerCase() === "live";
 
   return (
-    <article
-      className={`overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--panel)] ${
-        isFeatured ? "shadow-sm" : ""
-      }`}
-    >
+    <>
       {project.imagePath ? (
         <div
           className={`relative border-b border-[var(--border)] bg-[color:var(--bg)/0.6] ${
@@ -144,28 +118,46 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </div>
         ) : null}
 
-        {actions.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-            {actions.map((action) =>
-              action.external ? (
-                <a
-                  key={action.label}
-                  href={action.href}
-                  className={actionClassName}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {action.label}
-                </a>
-              ) : (
-                <Link key={action.label} href={action.href} className={actionClassName}>
-                  {action.label}
-                </Link>
-              ),
-            )}
-          </div>
+        {showCaseStudyHint ? (
+          <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent)]">
+            View case study
+            <span aria-hidden="true">→</span>
+          </p>
         ) : null}
       </div>
-    </article>
+    </>
   );
+}
+
+export function ProjectCard({ project }: ProjectCardProps) {
+  const isFeatured = Boolean(project.featured);
+  const caseStudyUrl = project.caseStudyUrl;
+
+  const surfaceClassName = [
+    cardSurfaceClassName,
+    isFeatured ? "shadow-sm" : "",
+    caseStudyUrl
+      ? "block transition-[border-color] hover:border-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+      : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const content = (
+    <ProjectCardContent project={project} showCaseStudyHint={Boolean(caseStudyUrl)} />
+  );
+
+  if (caseStudyUrl) {
+    return (
+      <Link
+        href={caseStudyUrl}
+        className={surfaceClassName}
+        aria-label={`${project.title} case study`}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return <article className={surfaceClassName}>{content}</article>;
 }
