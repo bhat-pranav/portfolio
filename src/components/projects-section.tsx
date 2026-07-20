@@ -7,10 +7,11 @@ export function ProjectsSection() {
   const supporting = projects.filter((project) => !project.featured);
 
   return (
-    <section id="build" className="mx-auto max-w-5xl px-5 py-14">
+    <section id="build" className="mx-auto max-w-5xl scroll-mt-24 px-5 py-14" aria-labelledby="projects-heading">
       <SectionHeader
         label="[ SELECTED WORK ]"
         title="Projects"
+        titleId="projects-heading"
         description="Products and systems I have taken from an unclear problem to a working result."
       />
 

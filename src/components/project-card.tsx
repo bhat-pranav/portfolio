@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Project } from "@/types/project";
 
 type ProjectCardProps = {
@@ -11,13 +12,20 @@ function hasProgress(
   return Boolean(progress?.currentStage || progress?.nextMilestone);
 }
 
+const actionClassName =
+  "inline-flex min-h-10 items-center text-[var(--accent)] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]";
+
 export function ProjectCard({ project }: ProjectCardProps) {
   const isFeatured = Boolean(project.featured);
   const liveLabel = project.liveActionLabel ?? "View Live";
 
   const actions = [
     project.liveUrl
-      ? { href: project.liveUrl, label: liveLabel, external: /^https?:\/\//.test(project.liveUrl) }
+      ? {
+          href: project.liveUrl,
+          label: liveLabel,
+          external: /^https?:\/\//.test(project.liveUrl),
+        }
       : null,
     project.repositoryUrl
       ? {
@@ -38,6 +46,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   );
 
   const showProgress = hasProgress(project.progress);
+  const statusIsLive = project.status.toLowerCase() === "live";
 
   return (
     <article
@@ -48,20 +57,21 @@ export function ProjectCard({ project }: ProjectCardProps) {
       {project.imagePath ? (
         <div
           className={`relative border-b border-[var(--border)] bg-[color:var(--bg)/0.6] ${
-            isFeatured ? "aspect-[16/9] sm:aspect-[2/1]" : "aspect-[16/10]"
+            isFeatured
+              ? "aspect-[4/5] max-h-[26rem] sm:aspect-[5/4] sm:max-h-[28rem]"
+              : "aspect-[4/5] max-h-[20rem]"
           }`}
         >
           <Image
             src={project.imagePath}
-            alt={`${project.title} preview`}
+            alt={`${project.title} interface screenshot`}
             fill
-            className="object-cover object-top"
+            className="object-contain object-top"
             sizes={
               isFeatured
                 ? "(max-width: 768px) 100vw, 1024px"
                 : "(max-width: 768px) 100vw, 40vw"
             }
-            priority={isFeatured}
           />
         </div>
       ) : null}
@@ -76,13 +86,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
             {project.title}
           </h3>
           <span
-            className={`shrink-0 rounded-full border px-2 py-0.5 text-xs ${
-              project.status.toLowerCase() === "live"
+            className={`shrink-0 rounded-full border px-2 py-0.5 text-xs font-medium ${
+              statusIsLive
                 ? "border-[var(--accent)] text-[var(--accent)]"
                 : "border-[var(--border)] text-[var(--muted)]"
             }`}
           >
-            {project.status}
+            Status: {project.status}
           </span>
         </div>
 
@@ -103,18 +113,20 @@ export function ProjectCard({ project }: ProjectCardProps) {
         ) : null}
 
         {project.stack && project.stack.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
+          <ul className="mt-4 flex list-none flex-wrap gap-2 p-0 text-xs text-[var(--muted)]">
             {project.stack.map((item) => (
-              <span key={item} className="rounded-full border border-[var(--border)] px-2 py-1">
+              <li key={item} className="rounded-full border border-[var(--border)] px-2 py-1">
                 {item}
-              </span>
+              </li>
             ))}
-          </div>
+          </ul>
         ) : null}
 
         {showProgress ? (
           <div className="mt-4 rounded-lg border border-[var(--border)] bg-[color:var(--bg)/0.45] p-4">
-            <div className="text-xs uppercase tracking-wide text-[var(--muted)]">Progress</div>
+            <div className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+              Progress
+            </div>
             <div className="mt-3 space-y-2 text-sm">
               {project.progress?.currentStage ? (
                 <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:gap-4">
@@ -134,18 +146,23 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
         {actions.length > 0 ? (
           <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-            {actions.map((action) => (
-              <a
-                key={action.label}
-                href={action.href}
-                className="text-[var(--accent)] hover:underline"
-                {...(action.external
-                  ? { target: "_blank", rel: "noreferrer" }
-                  : {})}
-              >
-                {action.label}
-              </a>
-            ))}
+            {actions.map((action) =>
+              action.external ? (
+                <a
+                  key={action.label}
+                  href={action.href}
+                  className={actionClassName}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {action.label}
+                </a>
+              ) : (
+                <Link key={action.label} href={action.href} className={actionClassName}>
+                  {action.label}
+                </Link>
+              ),
+            )}
           </div>
         ) : null}
       </div>

@@ -3,16 +3,21 @@ import type { FeaturedProduct } from "@/types/featured-product";
 
 type FeaturedProductPreviewProps = {
   product: FeaturedProduct;
+  priority?: boolean;
 };
 
-export function FeaturedProductPreview({ product }: FeaturedProductPreviewProps) {
+export function FeaturedProductPreview({
+  product,
+  priority = false,
+}: FeaturedProductPreviewProps) {
   const media = product.screenshotPath ? (
     <Image
       src={product.screenshotPath}
-      alt={`${product.name} preview`}
+      alt={`${product.name} product interface showing job description and resume inputs`}
       fill
-      className="object-cover object-top"
+      className="object-contain object-top"
       sizes="(max-width: 768px) 100vw, 40vw"
+      priority={priority}
     />
   ) : (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2 px-4 text-center">
@@ -23,15 +28,15 @@ export function FeaturedProductPreview({ product }: FeaturedProductPreviewProps)
 
   return (
     <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--panel)] shadow-sm">
-      <div className="relative aspect-[16/10] border-b border-[var(--border)] bg-[color:var(--bg)/0.6]">
+      <div className="relative aspect-[4/5] max-h-[28rem] w-full border-b border-[var(--border)] bg-[color:var(--bg)/0.6] sm:aspect-[5/6] sm:max-h-[32rem]">
         {media}
       </div>
 
       <div className="p-5">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="font-semibold tracking-tight">{product.name}</h2>
-          <span className="shrink-0 rounded-full border border-[var(--accent)] px-2 py-0.5 text-xs text-[var(--accent)]">
-            {product.status}
+        <div className="flex items-start justify-between gap-3">
+          <p className="font-semibold tracking-tight text-[var(--text)]">{product.name}</p>
+          <span className="shrink-0 rounded-full border border-[var(--accent)] px-2 py-0.5 text-xs font-medium text-[var(--accent)]">
+            Status: {product.status}
           </span>
         </div>
 
@@ -41,10 +46,11 @@ export function FeaturedProductPreview({ product }: FeaturedProductPreviewProps)
           <a
             href={product.liveUrl}
             target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-block text-sm text-[var(--accent)] hover:underline"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex min-h-10 items-center text-sm text-[var(--accent)] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           >
-            Open live →
+            Open live product
+            <span aria-hidden="true"> →</span>
           </a>
         ) : null}
       </div>

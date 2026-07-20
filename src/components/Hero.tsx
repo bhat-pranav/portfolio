@@ -1,12 +1,19 @@
+import Link from "next/link";
 import { FeaturedProductPreview } from "@/components/featured-product-preview";
 import { bulletCheckPreview } from "@/data/bullet-check";
 
+const secondaryCtaClassName =
+  "inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium hover:border-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]";
+
 export function Hero() {
   return (
-    <section className="mx-auto max-w-5xl px-5 pt-12 pb-10 sm:pt-16">
+    <section className="mx-auto max-w-5xl px-5 pt-12 pb-10 sm:pt-16" aria-labelledby="hero-heading">
       <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-8">
         <div className="min-w-0">
-          <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
+          <h1
+            id="hero-heading"
+            className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl"
+          >
             I build data and systems that ship.
           </h1>
 
@@ -17,23 +24,20 @@ export function Hero() {
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <a
-              href="#build"
-              className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--bg)] hover:opacity-90"
+            <Link
+              href="/#build"
+              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--bg)] hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             >
               View Projects
-            </a>
-            <a
-              href="/Pranav_Resume_W26.pdf"
-              className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium hover:border-[var(--accent)]"
-            >
+            </Link>
+            <a href="/Pranav_Resume_W26.pdf" className={secondaryCtaClassName}>
               Resume
             </a>
             <a
               href="https://github.com/bhat-pranav"
               target="_blank"
-              rel="noreferrer"
-              className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-medium hover:border-[var(--accent)]"
+              rel="noopener noreferrer"
+              className={secondaryCtaClassName}
             >
               GitHub
             </a>
@@ -45,7 +49,7 @@ export function Hero() {
         </div>
 
         <div className="min-w-0">
-          <FeaturedProductPreview product={bulletCheckPreview} />
+          <FeaturedProductPreview product={bulletCheckPreview} priority />
         </div>
       </div>
     </section>

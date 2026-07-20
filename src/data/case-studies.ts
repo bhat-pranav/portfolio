@@ -1,5 +1,6 @@
 import {
   BULLET_CHECK_LIVE_URL,
+  BULLET_CHECK_REPOSITORY_URL,
   BULLET_CHECK_SCREENSHOT_PATH,
 } from "@/data/bullet-check";
 import type { CaseStudy } from "@/types/case-study";
@@ -12,11 +13,11 @@ export const bulletCheckCaseStudy: CaseStudy = {
   timeline: "June 26–27, 2026",
   description:
     "A live tool that compares a resume against a job description, identifies the three weakest bullets and generates more targeted rewrites.",
-  metaTitle: "Bullet Check — Pranav Bhat",
+  metaTitle: "Bullet Check",
   metaDescription:
     "A live tool that compares a resume against a job description and identifies the three bullets most in need of improvement.",
   liveUrl: BULLET_CHECK_LIVE_URL,
-  repositoryUrl: "https://github.com/bhat-pranav/bullet-check",
+  repositoryUrl: BULLET_CHECK_REPOSITORY_URL,
   heroImage: BULLET_CHECK_SCREENSHOT_PATH,
   stack: [
     "Next.js 16",
