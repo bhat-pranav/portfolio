@@ -17,8 +17,8 @@ export function SiteNav() {
           aria-label="Primary"
           className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 text-sm text-[var(--muted)] sm:gap-x-4"
         >
-          <Link href="/#build" className={linkClassName}>
-            Work
+          <Link href="/#projects" className={linkClassName}>
+            Projects
           </Link>
           <a
             href="/Pranav_Resume_W26.pdf"

@@ -176,10 +176,10 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
   return (
     <article className="mx-auto max-w-3xl px-5 pt-12 pb-10 sm:pt-16">
       <Link
-        href="/#build"
+        href="/#projects"
         className="inline-flex min-h-10 items-center text-sm text-[var(--muted)] hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
       >
-        ← Selected Work
+        ← Projects
       </Link>
 
       <header className="mt-6">
