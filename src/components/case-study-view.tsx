@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CaseStudy } from "@/types/case-study";
+import type { ReactNode } from "react";
 
 type CaseStudyViewProps = {
   study: CaseStudy;
@@ -11,6 +12,9 @@ type SectionDef = {
   title: string;
   content?: string;
   list?: string[];
+  ordered?: boolean;
+  note?: string;
+  diagram?: string;
 };
 
 function metadataItems(study: CaseStudy) {
@@ -23,8 +27,69 @@ function metadataItems(study: CaseStudy) {
   return items;
 }
 
+function paragraphs(text: string): string[] {
+  return text
+    .split(/\n\n+/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+function Prose({ text }: { text: string }) {
+  const parts = paragraphs(text);
+  return (
+    <div className="mt-3 space-y-3 text-sm leading-relaxed text-[var(--muted)]">
+      {parts.map((part) => (
+        <p key={part}>{part}</p>
+      ))}
+    </div>
+  );
+}
+
+function SectionBody({ section }: { section: SectionDef }) {
+  let body: ReactNode = null;
+
+  if (section.list && section.list.length > 0) {
+    const ListTag = section.ordered ? "ol" : "ul";
+    body = (
+      <ListTag
+        className={`mt-3 space-y-2 pl-5 text-sm leading-relaxed text-[var(--muted)] ${
+          section.ordered ? "list-decimal" : "list-disc"
+        }`}
+      >
+        {section.list.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ListTag>
+    );
+  } else if (section.content) {
+    body = <Prose text={section.content} />;
+  }
+
+  return (
+    <>
+      {body}
+      {section.diagram ? (
+        <p className="mt-4 overflow-x-auto text-sm leading-relaxed text-[var(--muted)]">
+          <span className="whitespace-nowrap font-mono text-[13px] sm:whitespace-normal sm:text-sm">
+            {section.diagram}
+          </span>
+        </p>
+      ) : null}
+      {section.note ? (
+        <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{section.note}</p>
+      ) : null}
+    </>
+  );
+}
+
 export function CaseStudyView({ study }: CaseStudyViewProps) {
   const meta = metadataItems(study);
+
+  const limitationsList = Array.isArray(study.limitations)
+    ? study.limitations
+    : undefined;
+  const limitationsText =
+    typeof study.limitations === "string" ? study.limitations : undefined;
 
   const sections: SectionDef[] = [
     { key: "problem", title: "Problem", content: study.problem },
@@ -37,11 +102,14 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
       key: "user-flow",
       title: "User flow",
       list: study.userFlow?.filter(Boolean),
+      ordered: true,
+      note: study.userFlowNote,
     },
     {
       key: "technical-architecture",
       title: "Technical architecture",
       content: study.technicalArchitecture,
+      diagram: study.architectureDiagram,
     },
     {
       key: "implementation-details",
@@ -53,12 +121,29 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
       title: "Hardest technical issue",
       content: study.hardestTechnicalIssue,
     },
-    { key: "limitations", title: "Limitations", content: study.limitations },
+    {
+      key: "validation-and-error-handling",
+      title: "Validation and error handling",
+      list: study.validationAndErrorHandling?.filter(Boolean),
+      ordered: false,
+    },
+    {
+      key: "privacy-and-data-handling",
+      title: "Privacy and data handling",
+      content: study.privacyAndDataHandling,
+    },
+    {
+      key: "limitations",
+      title: "Limitations",
+      content: limitationsText,
+      list: limitationsList,
+      ordered: false,
+    },
     { key: "results", title: "Results", content: study.results },
     { key: "next-steps", title: "Next steps", content: study.nextSteps },
   ].filter((section) => {
     if (section.list) return section.list.length > 0;
-    return Boolean(section.content);
+    return Boolean(section.content || section.diagram);
   });
 
   return (
@@ -149,17 +234,7 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
           {sections.map((section) => (
             <section key={section.key}>
               <h2 className="text-lg font-semibold tracking-tight">{section.title}</h2>
-              {section.list ? (
-                <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-[var(--muted)]">
-                  {section.list.map((step) => (
-                    <li key={step}>{step}</li>
-                  ))}
-                </ol>
-              ) : (
-                <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
-                  {section.content}
-                </p>
-              )}
+              <SectionBody section={section} />
             </section>
           ))}
         </div>

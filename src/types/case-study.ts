@@ -16,10 +16,16 @@ export type CaseStudy = {
   problem?: string;
   productDecision?: string;
   userFlow?: string[];
+  /** Optional note rendered after the user-flow list */
+  userFlowNote?: string;
   technicalArchitecture?: string;
+  /** Simple one-line architecture flow, e.g. "A → B → C" */
+  architectureDiagram?: string;
   implementationDetails?: string;
   hardestTechnicalIssue?: string;
-  limitations?: string;
+  validationAndErrorHandling?: string[];
+  privacyAndDataHandling?: string;
+  limitations?: string | string[];
   results?: string;
   nextSteps?: string;
 };
