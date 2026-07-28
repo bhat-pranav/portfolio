@@ -32,7 +32,7 @@ export const bulletCheckCaseStudy: CaseStudy = {
     "Anthropic Messages API",
   ],
   problem:
-    "Given a job description and a full resume, it can be difficult to quickly determine which bullets are the weakest fit for that specific role. Bullet Check narrows the review to the three bullets most in need of improvement and provides a clearer rewrite for each one.",
+    "Given a job description and a full resume, it's hard to tell quickly which bullets are the weakest fit for that specific role. Bullet Check narrows the review to the three bullets most in need of improvement and provides a clearer rewrite for each one.",
   productDecision:
     "The product is intentionally focused on three bullets instead of rewriting the entire resume. Each result includes the original bullet, an explanation of why it is weak relative to the job description and a stronger rewrite. This keeps the output focused and gives the user a short list of changes they can review individually.",
   userFlow: [
@@ -86,7 +86,7 @@ export const jobLensCaseStudy: CaseStudy = {
   role: "Solo developer",
   timeline: "July 22–24, 2026",
   description:
-    "A data-viz app showing what the job market is actually asking for: skill demand, role breakdowns and top hiring companies, extracted from real job postings via LLM.",
+    "A data-viz app showing what the job market is asking for: skill demand, role breakdowns and top hiring companies, extracted from real job postings via LLM.",
   metaTitle: "Job Lens",
   metaDescription:
     "A data-viz app showing real job-market skill demand, extracted from 1,000 job postings via an LLM-based extraction pipeline.",
@@ -104,7 +104,7 @@ export const jobLensCaseStudy: CaseStudy = {
   problem:
     "Job postings describe what employers are hiring for, but that information is locked in unstructured text spread across thousands of listings. Job Lens turns a sample of real postings into a structured view of what skills are actually in demand, how that demand shifts by role, and which companies are doing the hiring.",
   productDecision:
-    "Job Lens is built as a static, offline-first product rather than a live query tool. The skill extraction runs once as a batch pipeline and its output is committed as JSON, and the frontend statically imports that JSON at build time with no runtime API or database. This trades live freshness for a simpler, more reliable architecture: the deployed site has zero runtime dependencies and nothing that can fail at request time.",
+    "Job Lens is built as a static, offline-first product rather than a live query tool. The skill extraction runs once as a batch pipeline and its output is committed as JSON, and the frontend statically imports that JSON at build time with no runtime API or database. This trades live freshness for a simpler, more reliable architecture. The deployed site has zero runtime dependencies and nothing that can fail at request time.",
   userFlow: [
     "A visitor lands on the page and sees three sections: Top Skills, Skills by Role and Top Hiring Companies.",
     "Top Skills shows the 20 most requested skills across all sampled postings, ranked and sized by frequency.",
