@@ -3,19 +3,12 @@ import {
   BULLET_CHECK_LIVE_URL,
   BULLET_CHECK_SCREENSHOT_PATH,
 } from "@/data/bullet-check";
+import {
+  JOB_LENS_CASE_STUDY_URL,
+  JOB_LENS_LIVE_URL,
+  JOB_LENS_SCREENSHOT_PATH,
+} from "@/data/job-lens";
 import type { Project } from "@/types/project";
-
-/**
- * TODO: set the current build stage for the Job Market Intelligence Dashboard,
- * e.g. "Ingesting and cleaning posting data"
- */
-export const JOB_MARKET_CURRENT_STAGE: string | undefined = undefined;
-
-/**
- * TODO: set the next milestone for the Job Market Intelligence Dashboard,
- * e.g. "Ship skill-demand charts for one role family"
- */
-export const JOB_MARKET_NEXT_MILESTONE: string | undefined = undefined;
 
 export const projects: Project[] = [
   {
@@ -30,13 +23,14 @@ export const projects: Project[] = [
     caseStudyUrl: BULLET_CHECK_CASE_STUDY_URL,
   },
   {
-    title: "Job Market Intelligence Dashboard",
-    status: "In development",
+    title: "Job Lens",
+    status: "Live",
     description:
-      "A data product tracking role volume, hiring demand and recurring skills across data, product and solutions job postings.",
-    progress: {
-      currentStage: JOB_MARKET_CURRENT_STAGE,
-      nextMilestone: JOB_MARKET_NEXT_MILESTONE,
-    },
+      "A data-viz app showing what the job market is actually asking for: skill demand, role breakdowns and top hiring companies extracted from 1,000 real job postings via LLM.",
+    stack: ["Next.js", "TypeScript", "Python", "OpenAI API", "Vercel"],
+    featured: true,
+    imagePath: JOB_LENS_SCREENSHOT_PATH,
+    liveUrl: JOB_LENS_LIVE_URL,
+    caseStudyUrl: JOB_LENS_CASE_STUDY_URL,
   },
 ];
