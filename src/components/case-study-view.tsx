@@ -181,7 +181,8 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
       </Link>
 
       <header className="mt-6">
-        <div className="flex flex-wrap items-center gap-3">
+        <p className="text-xl font-bold tracking-tight sm:text-2xl">[ CASE STUDY ]</p>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             {study.title}
           </h1>

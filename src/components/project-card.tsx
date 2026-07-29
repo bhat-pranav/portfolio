@@ -30,7 +30,7 @@ function ProjectCardContent({
     <>
       {project.imagePath ? (
         <div
-          className={`relative border-b border-[var(--border)] bg-[color:var(--bg)/0.6] ${
+          className={`relative w-full border-b border-[var(--border)] bg-[color:var(--bg)/0.6] ${
             isFeatured
               ? "aspect-[4/5] max-h-[26rem] sm:aspect-[5/4] sm:max-h-[28rem]"
               : "aspect-[4/5] max-h-[20rem]"

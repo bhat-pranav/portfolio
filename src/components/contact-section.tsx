@@ -1,4 +1,5 @@
 import { ButtonLink } from "@/components/button-link";
+import { SectionHeader } from "@/components/section-header";
 
 export function ContactSection() {
   return (
@@ -7,6 +8,8 @@ export function ContactSection() {
       className="mx-auto max-w-5xl scroll-mt-24 px-5 py-14"
       aria-labelledby="contact-heading"
     >
+      <SectionHeader label="[ CONTACT ]" />
+
       <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-6 sm:p-7">
         <h2 id="contact-heading" className="text-2xl font-semibold tracking-tight">
           Let’s talk.

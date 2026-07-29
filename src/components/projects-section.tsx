@@ -12,11 +12,7 @@ export function ProjectsSection() {
       className="mx-auto max-w-5xl scroll-mt-24 px-5 py-14"
       aria-labelledby="projects-heading"
     >
-      <SectionHeader
-        label="[ PROJECTS ]"
-        title="Projects"
-        titleId="projects-heading"
-      />
+      <SectionHeader label="[ PROJECTS ]" titleId="projects-heading" />
 
       <div className="space-y-4">
         {featured.map((project) => (

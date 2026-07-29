@@ -1,6 +1,6 @@
 type SectionHeaderProps = {
   label: string;
-  title: string;
+  title?: string;
   titleId?: string;
   description?: string;
   aside?: string;
@@ -15,10 +15,12 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   const heading = (
     <div>
-      <p className="text-xs text-[var(--muted)]">{label}</p>
-      <h2 id={titleId} className="mt-2 text-2xl font-semibold tracking-tight">
-        {title}
-      </h2>
+      <p className="text-xl font-medium tracking-tight sm:text-[var(--muted)]" id={titleId}>
+        {label}
+      </p>
+      {title ? (
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h2>
+      ) : null}
       {description ? (
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--muted)]">{description}</p>
       ) : null}
