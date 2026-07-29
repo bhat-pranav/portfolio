@@ -5,17 +5,18 @@ import { useEffect, useState } from "react";
 // Rotation list — edit this array to change what "Currently:" cycles through.
 // Nothing below this needs to change when you add, remove, or reorder items.
 const ROTATION: readonly string[] = [
-  "Systems Design Engineering, Waterloo",
+  "Systems Design Engineering @ Waterloo",
   "Data Analyst @ LHP",
   "Shipped Bullet Check & JobLens",
-  "Coffee nerd",
-  "Builds in LEGO too",
+  "Coffee Nerd",
+  "LEGO Builder",
+  "Looking For Winter 2027 Opportunities",
 ];
 
-const TYPE_SPEED_MS = 55;
-const DELETE_SPEED_MS = 35;
+const TYPE_SPEED_MS = 75;
+const DELETE_SPEED_MS = 55;
 const PAUSE_MS = 1400;
-const CURSOR_BLINK_MS = 500;
+const CURSOR_BLINK_MS = 400;
 
 type Phase = "typing" | "pausing" | "deleting";
 
@@ -86,9 +87,14 @@ export function HeroTypewriter() {
 
   return (
     <>
-      <span aria-hidden="true">{displayText}</span>
+      <span aria-hidden="true" className="text-[var(--accent)]">
+        {displayText}
+      </span>
       {reducedMotion ? null : (
-        <span aria-hidden="true" className={showCursor ? "opacity-100" : "opacity-0"}>
+        <span
+          aria-hidden="true"
+          className={`text-[var(--accent)] ${showCursor ? "opacity-100" : "opacity-0"}`}
+        >
           |
         </span>
       )}

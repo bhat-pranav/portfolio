@@ -15,7 +15,7 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   const heading = (
     <div>
-      <p className="text-xl font-medium tracking-tight sm:text-[var(--muted)]" id={titleId}>
+      <p className="text-xl font-medium tracking-tight text-[var(--muted)]" id={titleId}>
         {label}
       </p>
       {title ? (

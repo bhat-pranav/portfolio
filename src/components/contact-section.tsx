@@ -5,12 +5,12 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="mx-auto max-w-5xl scroll-mt-24 px-5 py-14"
+      className="mx-auto max-w-5xl scroll-mt-24 px-5 py-14 sm:py-16"
       aria-labelledby="contact-heading"
     >
       <SectionHeader label="[ CONTACT ]" />
 
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-6 sm:p-7">
+      <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-6">
         <h2 id="contact-heading" className="text-2xl font-semibold tracking-tight">
           Let’s talk.
         </h2>

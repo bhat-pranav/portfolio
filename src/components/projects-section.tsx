@@ -9,7 +9,7 @@ export function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="mx-auto max-w-5xl scroll-mt-24 px-5 py-14"
+      className="mx-auto max-w-5xl scroll-mt-24 px-5 py-14 sm:py-16"
       aria-labelledby="projects-heading"
     >
       <SectionHeader label="[ PROJECTS ]" titleId="projects-heading" />
