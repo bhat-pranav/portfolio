@@ -1,22 +1,38 @@
 ## Portfolio
+Personal portfolio site. Single-page, built to showcase shipped work and current status for co-op recruiting — primary audience is recruiters/hiring managers evaluating for Winter 2027 co-op placements (forward-deployed engineering, technical PM, builder-track SWE roles).
+
+Tone across the whole site: understated and grounded, not flashy or fake. If a piece of copy sounds like a generic template or a LinkedIn summary, it's wrong — rewrite it.
+
 Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Deployed via Vercel conventions (sitemap.ts/robots.ts present for SEO). Repo: bhat-pranav/portfolio, main branch.
 
 ### Structure
 - `/` — nav, hero, projects section, contact section, footer
 - `/projects/[slug]` — dynamic case-study pages, statically generated from src/data/case-studies.ts
 - Content lives in typed data files (src/data/projects.ts, case-studies.ts, bullet-check.ts), not hardcoded in components
+- No tests exist in this repo (no Vitest/Jest config or *.test.*/*.spec.* files)
+
+### Design system
+- Theme: dark, near-black background (`--bg`), green accent (`--accent`). Tokens live as CSS custom properties in `:root`/`@theme inline` in src/app/globals.css — there is no tailwind.config.* file (Tailwind v4 CSS-based config). Never hardcode new hex values; add new tokens to globals.css instead.
+- Layout pattern: bento-grid, introduced in the hero redesign, may extend to other sections.
 
 ### Content
 Positions Pranav as Systems Design Engineering student at Waterloo, targeting Winter 2027 co-op roles in data/solutions/AI implementation. Contact via email, LinkedIn, GitHub, resume PDF.
 
+Hero is a bento-grid layout: a large card with "Currently: [typewriter text]" (src/components/hero-typewriter.tsx) plus action buttons, and two small stat cards — Role (Data Analyst, Lifestyle Home Products) and Shipped (Bullet Check, Live, AI-powered, tested).
+
+**Hero is fragile — confirm before restructuring layout or animation logic.** It went through several iterations to get right. The typewriter rotation list (src/components/hero-typewriter.tsx) is kept deliberately separate from layout/animation code so it's easy to edit alone. It must respect `prefers-reduced-motion` — when set, skip the typing animation and render the first rotation item statically (already implemented, both via matchMedia in the component and a global CSS rule in globals.css).
+
 ### Projects shown
 1. Bullet Check — Live, featured. Full case study covering architecture, prompt design, the JSON-parsing reliability fix, and an explicit limitations list (no auth, no rate limiting, no schema validation, no tests, non-streaming).
-2. Job Market Intelligence Dashboard — status "In development." JOB_MARKET_CURRENT_STAGE and JOB_MARKET_NEXT_MILESTONE in src/data/projects.ts:12-18 are both undefined with TODO comments. No real progress content wired in yet.
+2. Job Lens — Live, featured. Data-viz app showing skill demand, role breakdowns and top hiring companies extracted from 1,000 real job postings via LLM. Stack: Next.js, TypeScript, Python, OpenAI API, Vercel. Live at joblens-pearl.vercel.app, case study at /projects/job-lens, data in src/data/job-lens.ts.
+
+### Content accuracy
+Don't invent metrics, dates, testimonials, or bio/project details that aren't confirmed elsewhere in this repo or stated directly by Pranav. If a project card or bio line is missing information, flag it rather than filling it in with a plausible guess.
 
 ### Code health
 - npm run lint: clean
 - npx tsc --noEmit: clean
-- Last ~10 commits: active polish (nav/title simplification, clickable cards, standardized buttons, filename-casing fix, case-study system)
+- Recent commits: hero redesign (bento grid + typewriter), Job Lens added to replace the old in-development Job Market Intelligence Dashboard placeholder, case study content updates
 
 ### Housekeeping
 - desktop.ini is untracked (Windows Explorer artifact) — safe to add to .gitignore
