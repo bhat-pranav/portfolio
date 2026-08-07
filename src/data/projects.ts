@@ -8,9 +8,20 @@ import {
   JOB_LENS_LIVE_URL,
   JOB_LENS_SCREENSHOT_PATH,
 } from "@/data/job-lens";
+import { LIFESTYLE_SYSTEMS_CASE_STUDY_URL } from "@/data/lifestyle-systems";
 import type { Project } from "@/types/project";
 
 export const projects: Project[] = [
+  {
+    title: "Business Systems, Lifestyle Home Products",
+    status: "In production",
+    description:
+      "Salesforce, Tableau and Apps Script systems built across two co-op terms: a cross-platform license data warehouse, a cycle-time analytics pipeline processing 140,000+ records, and an operations dashboard used daily by the ops team.",
+    stack: ["Salesforce", "Tableau", "Google Apps Script", "SOQL"],
+    featured: true,
+    // TODO(Pranav): add imagePath: LIFESTYLE_SYSTEMS_SCREENSHOT_PATH once a redacted screenshot exists at public/images/lifestyle-systems.png
+    caseStudyUrl: LIFESTYLE_SYSTEMS_CASE_STUDY_URL,
+  },
   {
     title: "Bullet Check",
     status: "Live",

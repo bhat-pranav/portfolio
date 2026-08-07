@@ -3,19 +3,18 @@
 import { useEffect, useState } from "react";
 
 // Rotation list — edit this array to change what "Currently:" cycles through.
-// Nothing below this needs to change when you add, remove, or reorder items.
+// Kept short and fast: this is a secondary detail, not where the pitch lives.
+// ROTATION[0] doubles as the static fallback for prefers-reduced-motion, so
+// keep the strongest item first.
 const ROTATION: readonly string[] = [
+  "Data Analyst @ Lifestyle Home Products",
   "Systems Design Engineering @ Waterloo",
-  "Data Analyst @ LHP",
-  "Shipped Bullet Check & JobLens",
-  "Coffee Nerd",
-  "LEGO Builder",
-  "Looking For Winter 2027 Opportunities",
+  "Shipped Bullet Check & Job Lens",
 ];
 
-const TYPE_SPEED_MS = 75;
-const DELETE_SPEED_MS = 55;
-const PAUSE_MS = 1400;
+const TYPE_SPEED_MS = 55;
+const DELETE_SPEED_MS = 35;
+const PAUSE_MS = 900;
 const CURSOR_BLINK_MS = 400;
 
 type Phase = "typing" | "pausing" | "deleting";

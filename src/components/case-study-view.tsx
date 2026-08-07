@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/components/button-link";
-import type { CaseStudy } from "@/types/case-study";
+import type { CaseStudy, CaseStudySystem } from "@/types/case-study";
 import type { ReactNode } from "react";
 
 type CaseStudyViewProps = {
@@ -73,6 +73,57 @@ function ArchitectureDiagram({ diagram }: { diagram: string }) {
   );
 }
 
+function SystemCard({ system }: { system: CaseStudySystem }) {
+  return (
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-5 sm:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <h3 className="text-base font-semibold tracking-tight sm:text-lg">{system.name}</h3>
+        {system.status ? (
+          <span className="shrink-0 rounded-full border border-[var(--border)] px-2 py-0.5 text-xs font-medium text-[var(--muted)]">
+            {system.status}
+          </span>
+        ) : null}
+      </div>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+            Before
+          </p>
+          <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)]">{system.before}</p>
+        </div>
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+            After
+          </p>
+          <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)]">{system.after}</p>
+        </div>
+      </div>
+
+      {system.stat ? (
+        <p className="mt-4 border-t border-[var(--border)] pt-4 text-sm leading-relaxed text-[var(--text)]">
+          {system.stat}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function SystemsSection({ systems }: { systems: CaseStudySystem[] }) {
+  return (
+    <section aria-labelledby="section-systems">
+      <h2 id="section-systems" className="text-lg font-semibold tracking-tight">
+        Systems built
+      </h2>
+      <div className="mt-4 space-y-4">
+        {systems.map((system) => (
+          <SystemCard key={system.name} system={system} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function SectionBody({ section }: { section: SectionDef }) {
   let body: ReactNode = null;
 
@@ -116,8 +167,10 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
   const limitationsText =
     typeof study.limitations === "string" ? study.limitations : undefined;
 
+  const problemSection: SectionDef = { key: "problem", title: "Problem", content: study.problem };
+  const hasProblem = Boolean(problemSection.content);
+
   const sections: SectionDef[] = [
-    { key: "problem", title: "Problem", content: study.problem },
     {
       key: "product-decision",
       title: "Product decision",
@@ -267,8 +320,24 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
         </div>
       ) : null}
 
-      {sections.length > 0 ? (
+      {hasProblem || study.systems?.length || sections.length > 0 ? (
         <div className="mt-12 space-y-12">
+          {hasProblem ? (
+            <section aria-labelledby={`section-${problemSection.key}`}>
+              <h2
+                id={`section-${problemSection.key}`}
+                className="text-lg font-semibold tracking-tight"
+              >
+                {problemSection.title}
+              </h2>
+              <SectionBody section={problemSection} />
+            </section>
+          ) : null}
+
+          {study.systems && study.systems.length > 0 ? (
+            <SystemsSection systems={study.systems} />
+          ) : null}
+
           {sections.map((section) => (
             <section key={section.key} aria-labelledby={`section-${section.key}`}>
               <h2

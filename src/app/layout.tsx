@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 const siteUrl = "https://pbhat.me";
 const siteTitle = "Pranav Bhat";
 const siteDescription =
-  "Systems Design Engineering student at the University of Waterloo building data tools, AI applications and workflow automations.";
+  "Systems Design Engineering student at Waterloo. I build business systems and AI tools that ship and get used, from Salesforce/Tableau pipelines at Lifestyle Home Products to live apps like Bullet Check and Job Lens.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

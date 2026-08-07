@@ -10,6 +10,69 @@ import {
 } from "@/data/job-lens";
 import type { CaseStudy } from "@/types/case-study";
 
+export const lifestyleSystemsCaseStudy: CaseStudy = {
+  slug: "lifestyle-systems",
+  title: "Business Systems, Lifestyle Home Products",
+  status: "In production",
+  role: "Data Analyst",
+  timeline: "Second consecutive co-op term",
+  description:
+    "Cross-platform data infrastructure and reporting systems built during two co-op terms at a family-owned retail company: license/user data warehousing, cycle-time analytics and a company-wide operations dashboard.",
+  metaTitle: "Business Systems, Lifestyle Home Products",
+  metaDescription:
+    "Cross-platform data warehousing, cycle-time analytics and an operations dashboard built and shipped during two co-op terms at Lifestyle Home Products.",
+  // TODO(Pranav): add heroImage: LIFESTYLE_SYSTEMS_SCREENSHOT_PATH once a redacted screenshot exists at public/images/lifestyle-systems.png
+  stack: [
+    "Salesforce",
+    "Google Apps Script",
+    "Google Sheets",
+    "Tableau",
+    "SOQL",
+    "Google Workspace Admin APIs",
+  ],
+  problem:
+    "Lifestyle Home Products runs on Salesforce, Google Workspace and several point tools (Rilla, Regal, DaVinci 360), with Tableau layered on top for reporting. None of these systems talked to each other automatically. License and user data lived in five separate places with no unified view, the cycle-time reporting pipeline was built on a script that couldn't scale past its original design, and the operations dashboard the team relied on daily had drifted out of sync with the CRM it was supposed to reflect.",
+  systems: [
+    {
+      name: "Cross-Platform License & User Data Warehouse",
+      status: "In production, 4 of 5 platforms live",
+      before:
+        "Salesforce, Google Workspace, Rilla, Regal and DaVinci 360 held license and user data separately, with no unified view. Auditing headcount or license spend across platforms meant checking each system by hand.",
+      after:
+        "A single Apps Script pipeline now syncs Salesforce, Google Workspace, Rilla and Regal automatically, with DaVinci 360 integration in progress. Monthly snapshot tabs freeze at month-end to build a historical audit trail.",
+      stat: "The Google Workspace sync originally pulled licenses per user, which hit the Directory API's \"Bandwidth quota exceeded\" error under load. Rewriting it as a domain-wide enumeration eliminated the error entirely.",
+    },
+    {
+      name: "Cycle Time Data Warehouse v2",
+      status: "Shipped, reusable",
+      before:
+        "The existing pipeline was a container-bound script inherited from a previous co-op, architecturally unable to rotate files as data grew. An earlier version of the reporting logic also pre-grouped activity data by dimension before averaging, producing unweighted averages-of-averages that were quietly wrong.",
+      after:
+        "Rebuilt as a standalone script with token-broker OAuth, a normalized long-format schema (one row per activity per populated field), and a rotation system with 30-day carry-forward to preserve upsert integrity across rotation boundaries. The rotation logic was generalized into a reusable module with its own SOP so future pipelines can adopt it directly.",
+      stat: "Processed 147,723 activity records in a confirmed live run. At that logging rate, 1,300 days of daily activity would produce 190M+ rows, past Google Sheets' 10 million cell limit, which is why the rotation architecture exists instead of one continuously growing sheet.",
+    },
+    {
+      name: "Tableau Operations Dashboard",
+      status: "Shipped and in use",
+      before:
+        "The dashboard's backlog count didn't match the CRM it was built on. Tableau showed 350 open items against 236 in the source system (i360). The cause was a disabled Predecessor Status automation.",
+      after:
+        "Rebuilt and reactivated the scheduled flow from scratch, then cross-referenced all 28 Project Template records via SOQL against the 13 IDs visible in Tableau to replace cryptic Salesforce IDs with readable names across the dashboard.",
+      stat: "In active use by seven-plus people across the operations team. The reactivated flow was later disabled again after it conflicted with an existing Process Builder automation on the same records. That conflict hasn't been resolved yet.",
+    },
+  ],
+  limitations: [
+    "The DaVinci 360 integration for the license warehouse is still in progress, not yet live.",
+    "The Tableau dashboard's reactivated flow was disabled again after conflicting with an existing Process Builder automation, and that conflict is not yet resolved.",
+    "No hours-saved or cost-saved figure is tracked for the license warehouse; the manual process it replaced was never formally timed.",
+    "These are internal systems built for a private company, so there is no public demo or repository to link to.",
+  ],
+  results:
+    "This work was directed by and reviewed at the leadership level at Lifestyle Home Products, including the CFO, CEO and VP of Operations, before rolling out to the teams that now depend on it daily.\n\nAcross two consecutive co-op terms, four of five license-data platforms are fully automated into a single warehouse, a cycle-time pipeline processing 140,000+ records was rebuilt with a reusable rotation architecture, and the company's operations dashboard is back in sync with its source system and in active use by the operations team.",
+  nextSteps:
+    "Complete the DaVinci 360 integration to bring all five platforms into the unified license warehouse. Resolve the Process Builder conflict blocking the reactivated Tableau flow.",
+};
+
 export const bulletCheckCaseStudy: CaseStudy = {
   slug: "bullet-check",
   title: "Bullet Check",
@@ -142,7 +205,11 @@ export const jobLensCaseStudy: CaseStudy = {
     "Still deciding between leaving Job Lens as a static one-shot analysis or building automation to periodically re-sample postings and re-run the extraction pipeline, which would also require adding tests and a CI pipeline currently absent.",
 };
 
-export const caseStudies: CaseStudy[] = [bulletCheckCaseStudy, jobLensCaseStudy];
+export const caseStudies: CaseStudy[] = [
+  lifestyleSystemsCaseStudy,
+  bulletCheckCaseStudy,
+  jobLensCaseStudy,
+];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   return caseStudies.find((study) => study.slug === slug);

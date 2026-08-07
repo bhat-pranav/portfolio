@@ -1,3 +1,11 @@
+export type CaseStudySystem = {
+  name: string;
+  status?: string;
+  before: string;
+  after: string;
+  stat?: string;
+};
+
 export type CaseStudy = {
   slug: string;
   title: string;
@@ -9,6 +17,8 @@ export type CaseStudy = {
   liveUrl?: string;
   repositoryUrl?: string;
   heroImage?: string;
+  /** For role-based case studies covering multiple systems rather than one product */
+  systems?: CaseStudySystem[];
   /** Optional override for page <title> / metadata title */
   metaTitle?: string;
   /** Optional override for metadata description */

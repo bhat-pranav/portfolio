@@ -15,7 +15,7 @@ export function ContactSection() {
           Let’s talk.
         </h2>
         <p className="mt-2 max-w-2xl text-[var(--muted)]">
-          I’m seeking Winter 2027 co-op roles in data, solutions and AI implementation. I’m
+          I’m seeking Winter 2027 co-op roles in business systems, data and AI implementation. I’m
           particularly interested in teams building tools around real customer or operational
           workflows.
         </p>
