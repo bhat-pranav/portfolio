@@ -13,14 +13,22 @@ export function SectionHeader({
   description,
   aside,
 }: SectionHeaderProps) {
+  const labelClassName = "text-xl font-medium tracking-tight text-[var(--muted)]";
+
   const heading = (
     <div>
-      <p className="text-xl font-medium tracking-tight text-[var(--muted)]" id={titleId}>
-        {label}
-      </p>
       {title ? (
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h2>
-      ) : null}
+        <>
+          <p className={labelClassName}>{label}</p>
+          <h2 id={titleId} className="mt-2 text-2xl font-semibold tracking-tight">
+            {title}
+          </h2>
+        </>
+      ) : (
+        <h2 id={titleId} className={labelClassName}>
+          {label}
+        </h2>
+      )}
       {description ? (
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--muted)]">{description}</p>
       ) : null}

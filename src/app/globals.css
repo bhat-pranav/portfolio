@@ -8,6 +8,7 @@
   --border: rgba(255, 255, 255, 0.10);
   --accent: #0a7a4b;
   --grid: rgba(10, 122, 75, 0.20);
+  color-scheme: dark;
 }
 
 @theme inline {
