@@ -50,8 +50,8 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-6">
-          <p className="text-xs text-[var(--muted)]">Shipped</p>
+        <div className="rounded-xl border border-[var(--accent-border)] bg-[var(--accent-soft)] p-6">
+          <p className="text-xs font-medium text-[var(--accent)]">Shipped</p>
           <p className="mt-1.5 text-sm font-medium">Bullet Check & Job Lens</p>
           <p className="mt-1 text-sm text-[var(--muted)]">Live, AI-powered</p>
         </div>

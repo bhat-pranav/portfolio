@@ -5,7 +5,7 @@ const linkClassName =
 
 export function SiteNav() {
   return (
-    <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[color:var(--bg)/0.8] backdrop-blur motion-reduce:backdrop-blur-none">
+    <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[var(--bg-veil-80)] backdrop-blur motion-reduce:backdrop-blur-none">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-3">
         <Link
           href="/"

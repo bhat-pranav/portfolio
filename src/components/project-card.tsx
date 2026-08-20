@@ -30,7 +30,7 @@ function ProjectCardContent({
     <>
       {project.imagePath ? (
         <div
-          className={`relative w-full border-b border-[var(--border)] bg-[color:var(--bg)/0.6] ${
+          className={`relative w-full border-b border-[var(--border)] bg-[var(--bg-veil-60)] ${
             isFeatured
               ? "aspect-[4/5] max-h-[26rem] sm:aspect-[5/4] sm:max-h-[28rem]"
               : "aspect-[4/5] max-h-[20rem]"
@@ -97,7 +97,7 @@ function ProjectCardContent({
         ) : null}
 
         {showProgress ? (
-          <div className="mt-4 rounded-lg border border-[var(--border)] bg-[color:var(--bg)/0.45] p-4">
+          <div className="mt-4 rounded-lg border border-[var(--border)] bg-[var(--bg-veil-45)] p-4">
             <div className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
               Progress
             </div>

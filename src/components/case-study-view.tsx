@@ -234,7 +234,7 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
       </Link>
 
       <header className="mt-6">
-        <p className="text-xl font-bold tracking-tight sm:text-2xl">[ CASE STUDY ]</p>
+        <p className="text-sm font-medium tracking-tight text-[var(--muted)]">Case study</p>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             {study.title}
@@ -308,7 +308,7 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
       ) : null}
 
       {study.heroImage ? (
-        <div className="relative mt-8 aspect-[4/5] max-h-[34rem] overflow-hidden rounded-xl border border-[var(--border)] bg-[color:var(--bg)/0.6] sm:aspect-[5/4]">
+        <div className="relative mt-8 aspect-[4/5] max-h-[34rem] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-veil-60)] sm:aspect-[5/4]">
           <Image
             src={study.heroImage}
             alt={`${study.title} product screenshot`}

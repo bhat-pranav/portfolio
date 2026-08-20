@@ -2,11 +2,16 @@
 
 :root {
   --bg: #070a08;
+  --bg-veil-45: rgba(7, 10, 8, 0.45);
+  --bg-veil-60: rgba(7, 10, 8, 0.6);
+  --bg-veil-80: rgba(7, 10, 8, 0.8);
   --panel: rgba(255, 255, 255, 0.04);
   --text: rgba(255, 255, 255, 0.92);
   --muted: rgba(255, 255, 255, 0.68);
   --border: rgba(255, 255, 255, 0.10);
   --accent: #0a7a4b;
+  --accent-soft: rgba(10, 122, 75, 0.08);
+  --accent-border: rgba(10, 122, 75, 0.35);
   --grid: rgba(10, 122, 75, 0.20);
   color-scheme: dark;
 }
