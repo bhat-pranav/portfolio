@@ -14,11 +14,12 @@ Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Deployed v
 ### Design system
 - Theme: dark, near-black background (`--bg`), green accent (`--accent`). Tokens live as CSS custom properties in `:root`/`@theme inline` in src/app/globals.css — there is no tailwind.config.* file (Tailwind v4 CSS-based config). Never hardcode new hex values; add new tokens to globals.css instead.
 - Layout pattern: bento-grid, introduced in the hero redesign, may extend to other sections.
+- Opacity variants of a token must be their own CSS var defined in globals.css as a plain `rgba()` value (see `--accent-soft`, `--accent-border`, `--bg-veil-45/60/80`) — Tailwind v4's `bg-[color:var(--x)/0.5]` opacity-modifier syntax does not resolve against custom properties in this setup and silently renders transparent. Confirmed broken and fixed sitewide (was a no-op on the nav backdrop, project image wrappers, and progress box).
 
 ### Content
 Positions Pranav as Systems Design Engineering student at Waterloo, targeting Winter 2027 co-op roles in data/solutions/AI implementation. Contact via email, LinkedIn, GitHub, resume PDF.
 
-Hero is a bento-grid layout: a large card with "Currently: [typewriter text]" (src/components/hero-typewriter.tsx) plus action buttons, and two small stat cards — Role (Data Analyst, Lifestyle Home Products) and Shipped (Bullet Check, Live, AI-powered, tested).
+Hero is a bento-grid layout: a small context line ("Systems Design Engineering · University of Waterloo"), name as the h1 ("Pranav Bhat" — deliberately no marketing pitch sentence), the "Currently: [typewriter text]" line (src/components/hero-typewriter.tsx), an availability line, and action buttons. Two small stat cards sit alongside: Role (Data Analyst, Lifestyle Home Products — neutral treatment) and Shipped (Bullet Check & Job Lens, Live, AI-powered — accent-tinted border/background as the strongest-signal card, bigger/bolder value type than the label). Contact section uses the same accent-tinted card treatment and extra vertical padding (`py-20 sm:py-24` vs. the site's standard `py-14 sm:py-16`) to read as a deliberate closing before the footer.
 
 **Hero is fragile — confirm before restructuring layout or animation logic.** It went through several iterations to get right. The typewriter rotation list (src/components/hero-typewriter.tsx) is kept deliberately separate from layout/animation code so it's easy to edit alone. It must respect `prefers-reduced-motion` — when set, skip the typing animation and render the first rotation item statically (already implemented, both via matchMedia in the component and a global CSS rule in globals.css).
 
