@@ -4,7 +4,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="mx-auto max-w-5xl scroll-mt-24 px-5 py-14 sm:py-16"
+      className="mx-auto max-w-5xl scroll-mt-24 px-5 py-20 sm:py-24"
       aria-labelledby="contact-heading"
     >
       <div className="rounded-xl border border-[var(--accent-border)] bg-[var(--accent-soft)] p-6">
