@@ -1,7 +1,10 @@
 ﻿import { ButtonLink } from "@/components/button-link";
 import { HeroTypewriter } from "@/components/hero-typewriter";
+import { formatProjectList, getLiveProjectTitles } from "@/data/projects";
 
 export function Hero() {
+  const shippedProjects = formatProjectList(getLiveProjectTitles()) ?? "—";
+
   return (
     <section
       className="mx-auto max-w-5xl px-5 py-14 sm:py-16"
@@ -55,7 +58,7 @@ export function Hero() {
 
         <div className="rounded-xl border border-[var(--accent-border)] bg-[var(--accent-soft)] p-6">
           <p className="text-[11px] font-medium tracking-wide text-[var(--accent)]">Shipped</p>
-          <p className="mt-2 text-lg font-semibold tracking-tight">Bullet Check & Job Lens</p>
+          <p className="mt-2 text-lg font-semibold tracking-tight">{shippedProjects}</p>
           <p className="mt-1 flex items-center gap-1.5 text-sm text-[var(--muted)]">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
             Live, AI-powered

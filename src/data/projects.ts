@@ -45,3 +45,19 @@ export const projects: Project[] = [
     caseStudyUrl: JOB_LENS_CASE_STUDY_URL,
   },
 ];
+
+export function getLiveProjectTitles(): string[] {
+  return projects
+    .filter((project) => project.status.toLowerCase() === "live")
+    .map((project) => project.title);
+}
+
+/** Joins project titles as "A", "A & B", "A, B & C", or "A, B & N more" for 4+. */
+export function formatProjectList(titles: string[]): string | null {
+  if (titles.length === 0) return null;
+  if (titles.length === 1) return titles[0];
+  if (titles.length <= 3) {
+    return `${titles.slice(0, -1).join(", ")} & ${titles[titles.length - 1]}`;
+  }
+  return `${titles.slice(0, 2).join(", ")} & ${titles.length - 2} more`;
+}
