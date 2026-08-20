@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pranav Bhat — Portfolio
 
-## Getting Started
+Personal portfolio site, live at [pbhat.me](https://pbhat.me). Single-page site showcasing shipped work, built to give recruiters and hiring managers a fast, honest read on what I've actually built — not a resume restated as a website.
 
-First, run the development server:
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router)
+- React 19, TypeScript
+- Tailwind CSS 4 (CSS-based config — no `tailwind.config.*`, tokens live in `src/app/globals.css`)
+- Deployed on Vercel
+
+## Structure
+
+- `/` — nav, hero, projects section, contact section, footer
+- `/projects/[slug]` — dynamic case-study pages, statically generated from `src/data/case-studies.ts`
+- Project and case-study content lives in typed data files (`src/data/projects.ts`, `src/data/case-studies.ts`, plus one file per project), not hardcoded in components — adding or editing a project means editing data, not JSX
+
+## Projects shown
+
+- **[Bullet Check](https://bullet-check.vercel.app)** — compares a resume against a job description, flags the three weakest bullets, generates targeted rewrites. [Case study](https://pbhat.me/projects/bullet-check) · [repo](https://github.com/bhat-pranav/bullet-check)
+- **[Job Lens](https://joblens-pearl.vercel.app)** — data-viz app surfacing skill demand and hiring trends extracted from 1,000 real job postings via an LLM pipeline. [Case study](https://pbhat.me/projects/job-lens) · [repo](https://github.com/bhat-pranav/joblens)
+- **Business Systems, Lifestyle Home Products** — Salesforce/Tableau/Apps Script systems built across two co-op terms. Internal company work, no public repo. [Case study](https://pbhat.me/projects/lifestyle-systems)
+
+## Running locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). `npm run lint` and `npx tsc --noEmit` should both be clean before committing.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+No test suite exists yet — noted as a known gap in `STATUS.md`, not an oversight.
