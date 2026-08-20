@@ -10,11 +10,14 @@ export function Hero() {
       <div className="grid gap-3 sm:grid-cols-[1.6fr_1fr] sm:grid-rows-2">
         <div className="flex flex-col justify-between gap-6 rounded-xl border border-[var(--border)] bg-[var(--panel)] p-6 sm:row-span-2">
           <div className="space-y-3">
+            <p className="text-sm text-[var(--muted)]">
+              Systems Design Engineering · University of Waterloo
+            </p>
             <h1
               id="hero-heading"
-              className="text-3xl font-medium leading-snug tracking-tight sm:text-4xl"
+              className="text-3xl font-semibold leading-snug tracking-tight sm:text-4xl"
             >
-              I build business systems and AI tools that ship.
+              Pranav Bhat
             </h1>
             <p className="text-sm text-[var(--muted)]">
               Currently: <HeroTypewriter />
@@ -43,17 +46,20 @@ export function Hero() {
         </div>
 
         <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-6">
-          <p className="text-xs text-[var(--muted)]">Role</p>
-          <p className="mt-1.5 text-sm font-medium">Data Analyst</p>
+          <p className="text-[11px] font-medium tracking-wide text-[var(--muted)]">Role</p>
+          <p className="mt-2 text-lg font-semibold tracking-tight">Data Analyst</p>
           <p className="mt-1 text-sm text-[var(--muted)]">
             Lifestyle Home Products, 2 terms
           </p>
         </div>
 
         <div className="rounded-xl border border-[var(--accent-border)] bg-[var(--accent-soft)] p-6">
-          <p className="text-xs font-medium text-[var(--accent)]">Shipped</p>
-          <p className="mt-1.5 text-sm font-medium">Bullet Check & Job Lens</p>
-          <p className="mt-1 text-sm text-[var(--muted)]">Live, AI-powered</p>
+          <p className="text-[11px] font-medium tracking-wide text-[var(--accent)]">Shipped</p>
+          <p className="mt-2 text-lg font-semibold tracking-tight">Bullet Check & Job Lens</p>
+          <p className="mt-1 flex items-center gap-1.5 text-sm text-[var(--muted)]">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+            Live, AI-powered
+          </p>
         </div>
       </div>
     </section>
