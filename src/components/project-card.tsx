@@ -28,28 +28,6 @@ function ProjectCardContent({
 
   return (
     <>
-      {project.imagePath ? (
-        <div
-          className={`relative w-full border-b border-[var(--border)] bg-[var(--bg-veil-60)] ${
-            isFeatured
-              ? "aspect-[4/5] max-h-[26rem] sm:aspect-[5/4] sm:max-h-[28rem]"
-              : "aspect-[4/5] max-h-[20rem]"
-          }`}
-        >
-          <Image
-            src={project.imagePath}
-            alt={`${project.title} interface screenshot`}
-            fill
-            className="object-contain object-top"
-            sizes={
-              isFeatured
-                ? "(max-width: 768px) 100vw, 1024px"
-                : "(max-width: 768px) 100vw, 40vw"
-            }
-          />
-        </div>
-      ) : null}
-
       <div className={isFeatured ? "p-5 sm:p-6" : "p-5"}>
         <div className="flex items-start justify-between gap-3">
           <h3
@@ -125,6 +103,28 @@ function ProjectCardContent({
           </p>
         ) : null}
       </div>
+
+      {project.imagePath ? (
+        <div
+          className={`relative w-full border-t border-[var(--border)] bg-[var(--bg-veil-60)] ${
+            isFeatured
+              ? "aspect-[4/5] max-h-[26rem] sm:aspect-[5/4] sm:max-h-[28rem]"
+              : "aspect-[4/5] max-h-[20rem]"
+          }`}
+        >
+          <Image
+            src={project.imagePath}
+            alt={`${project.title} interface screenshot`}
+            fill
+            className="object-contain object-top"
+            sizes={
+              isFeatured
+                ? "(max-width: 768px) 100vw, 1024px"
+                : "(max-width: 768px) 100vw, 40vw"
+            }
+          />
+        </div>
+      ) : null}
     </>
   );
 }
