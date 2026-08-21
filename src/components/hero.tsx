@@ -7,7 +7,7 @@ export function Hero() {
 
   return (
     <section
-      className="mx-auto max-w-5xl px-5 py-6 sm:py-8"
+      className="mx-auto max-w-6xl px-5 py-6 sm:py-8"
       aria-labelledby="hero-heading"
     >
       <div className="grid gap-3 sm:grid-cols-[1.6fr_1fr] sm:grid-rows-2">

@@ -10,6 +10,7 @@ Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Deployed v
 - `/projects/[slug]` — dynamic case-study pages, statically generated from src/data/case-studies.ts
 - Content lives in typed data files (src/data/projects.ts, case-studies.ts, bullet-check.ts), not hardcoded in components
 - Anything derivable from `projects.ts` (e.g. "which projects are shipped/live") should be computed via its helpers (`getLiveProjectTitles`, `formatProjectList`), not retyped as a literal string in a component — the hero's "Shipped" stat card and `src/app/opengraph-image.tsx` both consume these so they can't drift out of sync with each other
+- Project cards (src/components/project-card.tsx) render title/status/description first, screenshot second — deliberately swapped from the original image-first order; the divider border sits on top of the image (`border-t`) rather than below it
 - No tests exist in this repo (no Vitest/Jest config or *.test.*/*.spec.* files)
 
 ### Design system
@@ -20,7 +21,7 @@ Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Deployed v
 ### Content
 Positions Pranav as Systems Design Engineering student at Waterloo, targeting Winter 2027 co-op roles in data/solutions/AI implementation. Contact via email, LinkedIn, GitHub, resume PDF.
 
-Hero is a bento-grid layout: a small context line ("Systems Design Engineering · University of Waterloo"), name as the h1 ("Pranav Bhat" — deliberately no marketing pitch sentence), the "Currently: [typewriter text]" line (src/components/hero-typewriter.tsx), an availability line, and action buttons. Two small stat cards sit alongside: Role (Data Analyst, Lifestyle Home Products — neutral treatment) and Shipped (Bullet Check & Job Lens, Live, AI-powered — accent-tinted border/background as the strongest-signal card, bigger/bolder value type than the label). Contact section uses the same accent-tinted card treatment and extra vertical padding (`py-20 sm:py-24` vs. the site's standard `py-14 sm:py-16`) to read as a deliberate closing before the footer.
+Hero is a bento-grid layout: a small context line ("Systems Design Engineering · University of Waterloo"), name as the h1 ("Pranav Bhat" — deliberately no marketing pitch sentence), the "Currently: [typewriter text]" line (src/components/hero-typewriter.tsx), an availability line, and action buttons. Two small stat cards sit alongside: Role (Data Analyst, Lifestyle Home Products — neutral treatment) and Shipped (Bullet Check & Job Lens, Live, AI-powered — accent-tinted border/background as the strongest-signal card, 12.5px tracked-out label, bigger/bolder value type than the label). Contact section uses the same accent-tinted card treatment and slightly more vertical padding (`py-8 sm:py-10` vs. the site's standard `py-6 sm:py-8`) to read as a deliberate closing before the footer — section spacing sitewide was deliberately tightened from an earlier, much more generous scale (`py-14 sm:py-16` / `py-20 sm:py-24`).
 
 **Hero is fragile — confirm before restructuring layout or animation logic.** It went through several iterations to get right. The typewriter rotation list (src/components/hero-typewriter.tsx) is kept deliberately separate from layout/animation code so it's easy to edit alone. It must respect `prefers-reduced-motion` — when set, skip the typing animation and render the first rotation item statically (already implemented, both via matchMedia in the component and a global CSS rule in globals.css).
 
@@ -40,7 +41,7 @@ Don't invent metrics, dates, testimonials, or bio/project details that aren't co
 ### Code health
 - npm run lint: clean
 - npx tsc --noEmit: clean
-- Recent commits: design-taste + accessibility audit fixes, hero rework (name-led identity), AI-slop audit fixes (README rewrite, sitemap fix), Open Graph image added
+- Recent commits: design-taste + accessibility audit fixes, hero rework (name-led identity), AI-slop audit fixes (README rewrite, sitemap fix), Open Graph image added, section-spacing tightened, project-card title/screenshot order swapped
 
 ### Housekeeping
 - desktop.ini is untracked (Windows Explorer artifact) — safe to add to .gitignore
