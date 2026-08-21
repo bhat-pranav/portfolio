@@ -7,7 +7,7 @@ export function Hero() {
 
   return (
     <section
-      className="mx-auto max-w-5xl px-5 py-14 sm:py-16"
+      className="mx-auto max-w-5xl px-5 py-6 sm:py-8"
       aria-labelledby="hero-heading"
     >
       <div className="grid gap-3 sm:grid-cols-[1.6fr_1fr] sm:grid-rows-2">
@@ -49,7 +49,7 @@ export function Hero() {
         </div>
 
         <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-6">
-          <p className="text-[11px] font-medium tracking-wide text-[var(--muted)]">Role</p>
+          <p className="text-[12.5px] font-medium tracking-wide text-[var(--muted)]">Role</p>
           <p className="mt-2 text-lg font-semibold tracking-tight">Data Analyst</p>
           <p className="mt-1 text-sm text-[var(--muted)]">
             Lifestyle Home Products, 2 terms
@@ -57,7 +57,7 @@ export function Hero() {
         </div>
 
         <div className="rounded-xl border border-[var(--accent-border)] bg-[var(--accent-soft)] p-6">
-          <p className="text-[11px] font-medium tracking-wide text-[var(--accent)]">Shipped</p>
+          <p className="text-[12.5px] font-medium tracking-wide text-[var(--accent)]">Shipped</p>
           <p className="mt-2 text-lg font-semibold tracking-tight">{shippedProjects}</p>
           <p className="mt-1 flex items-center gap-1.5 text-sm text-[var(--muted)]">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
