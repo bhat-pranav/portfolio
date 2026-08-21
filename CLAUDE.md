@@ -9,6 +9,7 @@ Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Deployed v
 - `/` — nav, hero, projects section, contact section, footer
 - `/projects/[slug]` — dynamic case-study pages, statically generated from src/data/case-studies.ts
 - Content lives in typed data files (src/data/projects.ts, case-studies.ts, bullet-check.ts), not hardcoded in components
+- Anything derivable from `projects.ts` (e.g. "which projects are shipped/live") should be computed via its helpers (`getLiveProjectTitles`, `formatProjectList`), not retyped as a literal string in a component — the hero's "Shipped" stat card and `src/app/opengraph-image.tsx` both consume these so they can't drift out of sync with each other
 - No tests exist in this repo (no Vitest/Jest config or *.test.*/*.spec.* files)
 
 ### Design system
@@ -24,8 +25,14 @@ Hero is a bento-grid layout: a small context line ("Systems Design Engineering �
 **Hero is fragile — confirm before restructuring layout or animation logic.** It went through several iterations to get right. The typewriter rotation list (src/components/hero-typewriter.tsx) is kept deliberately separate from layout/animation code so it's easy to edit alone. It must respect `prefers-reduced-motion` — when set, skip the typing animation and render the first rotation item statically (already implemented, both via matchMedia in the component and a global CSS rule in globals.css).
 
 ### Projects shown
-1. Bullet Check — Live, featured. Full case study covering architecture, prompt design, the JSON-parsing reliability fix, and an explicit limitations list (no auth, no rate limiting, no schema validation, no tests, non-streaming).
-2. Job Lens — Live, featured. Data-viz app showing skill demand, role breakdowns and top hiring companies extracted from 1,000 real job postings via LLM. Stack: Next.js, TypeScript, Python, OpenAI API, Vercel. Live at joblens-pearl.vercel.app, case study at /projects/job-lens, data in src/data/job-lens.ts.
+1. Business Systems, Lifestyle Home Products — In production, featured. Internal Salesforce/Tableau/Apps Script work at a private company, no public repo/demo. No screenshot yet — tracked via `// TODO(Pranav)` in src/data/projects.ts and src/data/case-studies.ts, waiting on a redacted image.
+2. Bullet Check — Live, featured. Full case study covering architecture, prompt design, the JSON-parsing reliability fix, and an explicit limitations list (no auth, no rate limiting, no schema validation, no tests, non-streaming).
+3. Job Lens — Live, featured. Data-viz app showing skill demand, role breakdowns and top hiring companies extracted from 1,000 real job postings via LLM. Stack: Next.js, TypeScript, Python, OpenAI API, Vercel. Live at joblens-pearl.vercel.app, case study at /projects/job-lens, data in src/data/job-lens.ts.
+
+### SEO / sharing
+- sitemap.ts lists all three case-study routes (`/projects/bullet-check`, `/projects/job-lens`, `/projects/lifestyle-systems`) plus `/` — keep this in sync when a case study is added or removed.
+- `src/app/opengraph-image.tsx` (and `twitter-image.tsx`, which re-exports it) generates a real 1200×630 share-card image at build time via `next/og`, styled with the site's actual tokens rather than a static asset. It pulls the "Shipped: ..." line from `projects.ts`'s helpers — see the Structure note above. `twitter.card` in layout.tsx is `summary_large_image` to match.
+- README.md has real project content (what it is, stack, structure, local dev, links to live projects/case studies) — it is not the `create-next-app` boilerplate default. Keep it accurate if structure/stack changes.
 
 ### Content accuracy
 Don't invent metrics, dates, testimonials, or bio/project details that aren't confirmed elsewhere in this repo or stated directly by Pranav. If a project card or bio line is missing information, flag it rather than filling it in with a plausible guess.
@@ -33,7 +40,7 @@ Don't invent metrics, dates, testimonials, or bio/project details that aren't co
 ### Code health
 - npm run lint: clean
 - npx tsc --noEmit: clean
-- Recent commits: hero redesign (bento grid + typewriter), Job Lens added to replace the old in-development Job Market Intelligence Dashboard placeholder, case study content updates
+- Recent commits: design-taste + accessibility audit fixes, hero rework (name-led identity), AI-slop audit fixes (README rewrite, sitemap fix), Open Graph image added
 
 ### Housekeeping
 - desktop.ini is untracked (Windows Explorer artifact) — safe to add to .gitignore
