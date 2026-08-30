@@ -17,60 +17,112 @@ export const lifestyleSystemsCaseStudy: CaseStudy = {
   role: "Data Analyst",
   timeline: "Second consecutive co-op term",
   description:
-    "Cross-platform data infrastructure and reporting systems built during two co-op terms at a family-owned retail company: license/user data warehousing, cycle-time analytics and a company-wide operations dashboard.",
+    "Data platform built across two co-op terms at a family-owned retail company: a centralized OAuth broker, ten Apps Script pipelines, and a set of interactive dashboards built with Claude, feeding Salesforce reporting and daily operations.",
   metaTitle: "Business Systems, Lifestyle Home Products",
   metaDescription:
-    "Cross-platform data warehousing, cycle-time analytics and an operations dashboard built and shipped during two co-op terms at Lifestyle Home Products.",
+    "Data platform built during two co-op terms at Lifestyle Home Products: OAuth infrastructure, ten Apps Script pipelines, and Claude-built interactive dashboards feeding daily operations.",
   // TODO(Pranav): add heroImage: LIFESTYLE_SYSTEMS_SCREENSHOT_PATH once a redacted screenshot exists at public/images/lifestyle-systems.png
   stack: [
     "Salesforce",
     "Google Apps Script",
     "Google Sheets",
-    "Tableau",
     "SOQL",
     "Google Workspace Admin APIs",
+    "Claude",
   ],
   problem:
-    "Lifestyle Home Products runs on Salesforce, Google Workspace and several point tools (Rilla, Regal, DaVinci 360), with Tableau layered on top for reporting. None of these systems talked to each other automatically. License and user data lived in five separate places with no unified view, the cycle-time reporting pipeline was built on a script that couldn't scale past its original design, and the operations dashboard the team relied on daily had drifted out of sync with the CRM it was supposed to reflect.",
+    "At Lifestyle Home Products, I built a centralized Salesforce authentication service and ten Apps Script pipelines pulling from Salesforce, Google Workspace, and a handful of outside vendor and recruiting APIs into Google Sheets warehouses. Those warehouses feed the company's day-to-day reporting: a native Salesforce dashboard, an executive scorecard, and a set of interactive dashboards I built with Claude. The token broker and the dashboard pipeline were built with another co-op; everything else, individually. I also spent part of the term documenting accounting processes that had never been written down.\n\nLHP's operational data was scattered across Salesforce, Google Workspace, and a handful of point tools (Rilla, Regal, JazzHR, Xero) that never talked to each other. Worse, the ten-plus Apps Script pipelines that did the talking each managed their own Salesforce login independently, which broke silently under scheduled triggers and put the company's Salesforce credentials at risk if enough failed at once. Reporting had the same problem from a different angle: Tableau, which the company depended on, had been fully deprecated with nothing built to replace it. Separately, a handful of critical accounting processes existed only as tribal knowledge in one person's head, with no documentation and no plan for what happens if they're ever unavailable.",
   systems: [
     {
-      name: "Cross-Platform License & User Data Warehouse",
-      status: "In production, 4 of 5 platforms live",
-      before:
-        "Salesforce, Google Workspace, Rilla, Regal and DaVinci 360 held license and user data separately, with no unified view. Auditing headcount or license spend across platforms meant checking each system by hand.",
-      after:
-        "A single Apps Script pipeline now syncs Salesforce, Google Workspace, Rilla and Regal automatically, with DaVinci 360 integration in progress. Monthly snapshot tabs freeze at month-end to build a historical audit trail.",
-      stat: "The Google Workspace sync originally pulled licenses per user, which hit the Directory API's \"Bandwidth quota exceeded\" error under load. Rewriting it as a domain-wide enumeration eliminated the error entirely.",
+      name: "Salesforce Token Broker",
+      status: "Co-built",
+      body: [
+        "10+ Apps Script pipelines originally each managed their own Salesforce OAuth connection using Apps Script's OAuth2 library and getUserProperties(). That breaks under time-driven triggers: getUserProperties() is scoped to an interactive user session, and a scheduled trigger has none, so token state would silently go stale and produce opaque auth failures in the early-morning trigger window. Worse, each pipeline handled its own refresh and retry logic independently, so a bad morning could mean a dozen-plus scripts all hitting Salesforce's OAuth endpoint on failure at once. Salesforce can rate-limit or revoke a refresh token used abusively, so uncoordinated retries were actively worsening the exact risk they were meant to avoid.",
+        "I built a single Apps Script web app that's the only thing in the system permitted to own the Salesforce OAuth grant. Every consuming pipeline calls its HTTP endpoint for a live access token instead of managing OAuth itself. A granted token is cached for a 25-minute TTL, well inside Salesforce's roughly two-hour session, turning a typical morning's 10+-pipeline trigger window into one grant instead of one per consumer. LockService prevents concurrent callers from stampeding the token endpoint, the refresh call gets three attempts with backoff, and HTTP status is checked before JSON.parse(), since the original version parsed blindly and turned a Salesforce maintenance page (returned as HTML) into an opaque \"Unexpected token '<'\" with zero diagnostic value. An invalid_grant response is detected as fatal and fails fast rather than burning through retries against a dead credential; a consumer that hits a 401 can pass force=1 to bypass the cache.",
+        "Two judgment calls worth mentioning. The domain-restriction check is implemented but deliberately not wired into the endpoint's authorization, since the deployment's own \"Anyone within domain\" setting is what actually gates access today; it's documented in place as the correct fallback if the deployment is ever opened more broadly, with a comment explaining it protects nothing currently, kept intentionally rather than left by accident. Separately, the first version of the cache-behavior test asserted that a forced refresh should return a different token string, and it failed, because Salesforce's refresh flow returns the same access token for a still-valid session rather than minting a new one. I re-derived the actual thing to check, whether a grant occurred, via a stored issued-at timestamp, and rewrote the test around that instead of the wrong assumption.",
+        "Reduced OAuth grant volume from 25+ per incident to 1 per cache window across 10+ pipelines, and turned OAuth from a per-pipeline maintenance burden into one testable, monitorable service that new pipelines integrate with through a single HTTP call.",
+      ],
     },
     {
-      name: "Cycle Time Data Warehouse v2",
-      status: "Shipped, reusable",
-      before:
-        "The existing pipeline was a container-bound script inherited from a previous co-op, architecturally unable to rotate files as data grew. An earlier version of the reporting logic also pre-grouped activity data by dimension before averaging, producing unweighted averages-of-averages that were quietly wrong.",
-      after:
-        "Rebuilt as a standalone script with token-broker OAuth, a normalized long-format schema (one row per activity per populated field), and a rotation system with 30-day carry-forward to preserve upsert integrity across rotation boundaries. The rotation logic was generalized into a reusable module with its own SOP so future pipelines can adopt it directly.",
-      stat: "Processed 147,723 activity records in a confirmed live run. At that logging rate, 1,300 days of daily activity would produce 190M+ rows, past Google Sheets' 10 million cell limit, which is why the rotation architecture exists instead of one continuously growing sheet.",
+      name: "User & License Warehouse",
+      status: "4 of 4 platforms live",
+      body: [
+        "LHP's workforce identity data was scattered across four systems with no reconciliation between them: Salesforce (roles, profiles, licenses), Google Workspace (access, groups), Rilla (sales conversation intelligence, used to check whether someone is actually active), and Regal (the call center platform). I built a daily pipeline, authenticating through the token broker, that unifies all four into one warehouse. Each source needed a genuinely different auth pattern: Salesforce delegates to the broker, Google Workspace required hand-rolled JWT signing since Apps Script's built-in OAuth doesn't support domain-wide delegation directly, Rilla uses a static API key in a nonstandard header format reverse-engineered from its docs, and Regal has no API at all, so its sync searches Gmail for a monthly emailed export and parses the CSV from the zipped attachment.",
+        "The daily sync runs all four sources as isolated jobs, each wrapped in its own try/catch, so one source's failure never blocks the other three. Along the way I fixed a Directory API quota failure (calling groups.list per user hit Google's bandwidth quota outright; fixed by fetching all domain groups once and building an in-memory lookup instead of one call per user), handled Google's Unix-epoch sentinel value for users who've never logged in (which silently corrupts \"last active\" reporting if not filtered explicitly), and worked around a non-obvious two-hop SOQL relationship traversal to get license type off a Salesforce user record. For Regal specifically, the Gmail search has to run as whoever's inbox receives the export, not whoever wrote the script, since GmailApp.search() runs as the trigger owner.",
+        "Replaced four disconnected sources of user and license truth with one daily-refreshed warehouse, used for license reconciliation, role auditing, and cross-checking agent activity between Rilla and Regal. All four platforms are fully live.",
+      ],
     },
     {
-      name: "Tableau Operations Dashboard",
-      status: "Shipped and in use",
-      before:
-        "The dashboard's backlog count didn't match the CRM it was built on. Tableau showed 350 open items against 236 in the source system (i360). The cause was a disabled Predecessor Status automation.",
-      after:
-        "Rebuilt and reactivated the scheduled flow from scratch, then cross-referenced all 28 Project Template records via SOQL against the 13 IDs visible in Tableau to replace cryptic Salesforce IDs with readable names across the dashboard.",
-      stat: "In active use by seven-plus people across the operations team. The reactivated flow was later disabled again after it conflicted with an existing Process Builder automation on the same records. That conflict hasn't been resolved yet.",
+      name: "Operations Dashboard Pipeline",
+      status: "Co-built, in production",
+      body: [
+        "When Tableau was fully deprecated at LHP, operational reporting (backlog by product line, balance-due aging, projected installs, one-pass completion) needed a new home. The destination is a native Salesforce i360 dashboard backed by a Google Sheets warehouse; I helped build the pipeline that populates it, twelve distinct daily reports across Windows & Doors, Bath, Sunroom, and combined Deficiency/Service.",
+        "Google Sheets' roughly 10-million-cell ceiling means twelve daily-snapshotted reports will eventually overflow a single file, so the pipeline checks cell usage against a threshold and spins up a new spreadsheet using the prior one as a template when it's near capacity, without requiring the downstream dashboard to be reconfigured. Re-running mid-month would duplicate rows without special handling, so a targeted-deletion step scans backward in chunks and deletes only the current month's block, leaving prior months untouched (a naive linear scan across 9 million cells would blow Apps Script's execution-time limit). Several queries walk four to five relationship hops deep to reflect LHP's actual i360 data model, with consistent null-coalescing rather than letting a broken chain throw. A run-scoped shared state ensures all twelve pulls in one execution share one token, one target file, and one consistent timestamp, so a rotation boundary can't land mid-run with half the reports on the old file and half on the new one.",
+        "Directly replaced Tableau as the reporting backbone for backlog, balance-due, and install-projection metrics across all three product lines plus Deficiency & Service, now feeding the dashboard used as the company's source of truth for these metrics.",
+      ],
+    },
+    {
+      name: "Cycle Time Warehouse",
+      status: "In production",
+      body: [
+        "LHP tracks cycle time across roughly 25 project-activity milestones, each stored as a separate, mostly-empty custom field on the underlying Salesforce object. I designed and built a standalone pipeline that restructures this into a long, normalized warehouse built for actual analysis: rather than mirroring Salesforce's wide, mostly-null shape, it expands each activity into one row per populated field, trading a higher row count for data that's directly pivotable by milestone, product line, and region without downstream unpivoting.",
+        "The composite key is activity ID plus field name, since one activity produces multiple rows; each 30-day rolling sync builds an in-memory index of existing keys and either overwrites in place or appends, since Sheets has no native upsert primitive. File rotation at the roughly 9.5-million-cell ceiling is trickier here than in an append-only pipeline, because upserts depend on matching against recently completed activities: a naive rotation where the new file starts empty breaks upserts right at the boundary, since an activity completed 25 days ago, sitting in the now-frozen old file, becomes unmatchable, and the next sync inserts it as a duplicate instead of updating it. A carry-forward step solves this by copying only rows still inside the lookback window into the new file, checking both the current and prior year to handle a window that straddles January 1.",
+        "Powers cycle-time analysis across roughly 25 milestone types, three product lines, and multiple geographic dimensions in an immediately pivotable format. A confirmed live run processed 147,723 activity records; the idempotent design makes the pipeline safe to re-run, backfill, or rotate without manual deduplication, and a multi-year backfill populated historical data back to 2022.",
+      ],
     },
   ],
+  highlightsLabel: "Additional warehouses",
+  highlights: [
+    {
+      name: "Costco Lead Source & Appointment Tracker",
+      source: "Salesforce",
+      purpose:
+        "Tracks how Costco-sourced leads convert into set and completed demo appointments, broken out by taker, market, and region, separate from the main ops reports.",
+    },
+    {
+      name: "Deleted Records Audit Log",
+      source: "Salesforce (queryAll, including soft-deleted)",
+      purpose:
+        "Daily audit trail of what's deleted across the org and by whom, spanning 9 objects, since Salesforce's Recycle Bin only holds records for 15 days.",
+    },
+    {
+      name: "Executive Scorecard (v2)",
+      source: "Salesforce, 39 aggregate queries",
+      purpose:
+        "Leadership-level scorecard across 10 metrics including backlog, retention, and cash. v2 exists because v1 ran all 39 queries serially and blew Apps Script's 30-minute execution cap; the rewrite fetches in parallel waves with a watchdog trigger that re-runs a failed pull automatically.",
+    },
+    {
+      name: "JazzHR Applicant Warehouse",
+      source: "JazzHR recruiting API",
+      purpose:
+        "Centralizes recruiting pipeline data for reporting alongside Salesforce location and business-unit data, which JazzHR's own interface can't cross-reference.",
+    },
+    {
+      name: "Marketing Dashboard: Lead Source Performance",
+      source: "Salesforce",
+      purpose:
+        "Full-funnel view from lead intake through appointment outcome through actual sale economics, broken out by market segment and region.",
+    },
+    {
+      name: "Xero Bank Transactions Export",
+      source: "Xero API",
+      purpose:
+        "Daily flattened export of bank transactions. Xero's interface has no CSV journal-entry import, so this gives a queryable, spreadsheet-native copy for downstream reconciliation.",
+    },
+  ],
+  aiDashboards:
+    "Alongside the pipelines, I used Claude to build a set of interactive dashboards, one per warehouse, each with year, month, product, and region filters, sortable charts, stat tiles, and target-vs-actual coloring. Two are live today: a Cycle Time dashboard and a Software Usage & License Audit dashboard, both driven entirely by Apps Script that Claude wrote against the underlying warehouse data.",
+  parallelInitiative: {
+    title: "Institutionalizing accounting knowledge",
+    body: "Ran in parallel with the technical work: a documentation initiative converting one accounting controller's undocumented process knowledge into a structured set of SOPs, written docs plus recorded video walkthroughs, each built against a consistent seven-part template covering frequency and trigger, systems required, step-by-step procedure, decision points and exceptions, common errors, output, and escalation contact.\n\nDocumented 10+ processes end to end, including bank reconciliation, payroll, government remittances, and vendor payment cycles, working directly with the controller and, for a related sub-process, the accounts payable manager. While mapping three unrelated processes, I noticed they all hit the same root cause: the accounting platform has no way to import journal entries from a CSV, forcing manual re-entry in all three. I flagged it as one consolidated recommendation instead of three separate, smaller asks.\n\nReduced key-person risk for finance operations that previously depended entirely on one person's availability and memory, and produced a reusable seven-part template that generalizes beyond accounting to any undocumented process in the org.",
+  },
   limitations: [
-    "The DaVinci 360 integration for the license warehouse is still in progress, not yet live.",
-    "The Tableau dashboard's reactivated flow was disabled again after conflicting with an existing Process Builder automation, and that conflict is not yet resolved.",
-    "No hours-saved or cost-saved figure is tracked for the license warehouse; the manual process it replaced was never formally timed.",
     "These are internal systems built for a private company, so there is no public demo or repository to link to.",
+    "No automated test suite exists across the pipelines, beyond the Token Broker's cache-behavior test.",
+    "The accounting documentation initiative has open items: the intercompany-adjustments walkthrough, the accounts-payable sub-process documentation, and the entity-structure reference are unfinished.",
   ],
   results:
-    "This work was directed by and reviewed at the leadership level at Lifestyle Home Products, including the CFO, CEO and VP of Operations, before rolling out to the teams that now depend on it daily.\n\nAcross two consecutive co-op terms, four of five license-data platforms are fully automated into a single warehouse, a cycle-time pipeline processing 140,000+ records was rebuilt with a reusable rotation architecture, and the company's operations dashboard is back in sync with its source system and in active use by the operations team.",
-  nextSteps:
-    "Complete the DaVinci 360 integration to bring all five platforms into the unified license warehouse. Resolve the Process Builder conflict blocking the reactivated Tableau flow.",
+    "This work was directed and reviewed at the leadership level (C-suite and various VPs) before rolling out to the teams that depend on it daily.\n\nTen production pipelines, a centralized OAuth service, and a set of Claude-built interactive dashboards now run LHP's operational reporting. Separately, the accounting documentation initiative reduced key-person risk across 10+ previously undocumented financial processes.",
 };
 
 export const bulletCheckCaseStudy: CaseStudy = {

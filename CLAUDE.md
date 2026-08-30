@@ -16,6 +16,7 @@ Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Deployed v
 ### Design system
 - Theme: dark, near-black background (`--bg`), green accent (`--accent`). Tokens live as CSS custom properties in `:root`/`@theme inline` in src/app/globals.css — there is no tailwind.config.* file (Tailwind v4 CSS-based config). Never hardcode new hex values; add new tokens to globals.css instead.
 - Layout pattern: bento-grid, introduced in the hero redesign, may extend to other sections.
+- Page container is `max-w-6xl` (bumped from `max-w-5xl`) across nav/hero/projects/contact/footer, to use more horizontal space on wide screens — inner text blocks keep their own tighter `max-w` (e.g. `max-w-2xl`/`max-w-3xl`) so line length stays readable. Considered and rejected a further move to a full-bleed, screen-filling dashboard-style grid — reads as a generic SaaS template and fights the site's understated tone; `max-w-6xl` is the intended ceiling, not a stepping stone to wider.
 - Opacity variants of a token must be their own CSS var defined in globals.css as a plain `rgba()` value (see `--accent-soft`, `--accent-border`, `--bg-veil-45/60/80`) — Tailwind v4's `bg-[color:var(--x)/0.5]` opacity-modifier syntax does not resolve against custom properties in this setup and silently renders transparent. Confirmed broken and fixed sitewide (was a no-op on the nav backdrop, project image wrappers, and progress box).
 
 ### Content
@@ -41,7 +42,7 @@ Don't invent metrics, dates, testimonials, or bio/project details that aren't co
 ### Code health
 - npm run lint: clean
 - npx tsc --noEmit: clean
-- Recent commits: design-taste + accessibility audit fixes, hero rework (name-led identity), AI-slop audit fixes (README rewrite, sitemap fix), Open Graph image added, section-spacing tightened, project-card title/screenshot order swapped
+- Recent commits: design-taste + accessibility audit fixes, hero rework (name-led identity), AI-slop audit fixes (README rewrite, sitemap fix), Open Graph image added, section-spacing tightened, project-card title/screenshot order swapped, containers widened to max-w-6xl
 
 ### Housekeeping
 - desktop.ini is untracked (Windows Explorer artifact) — safe to add to .gitignore

@@ -1,9 +1,18 @@
 export type CaseStudySystem = {
   name: string;
   status?: string;
-  before: string;
-  after: string;
+  /** Compressed before/after/stat format, for a short system summary. */
+  before?: string;
+  after?: string;
   stat?: string;
+  /** Free-form paragraphs, used instead of before/after when the story needs more room. */
+  body?: string[];
+};
+
+export type CaseStudyHighlight = {
+  name: string;
+  source: string;
+  purpose: string;
 };
 
 export type CaseStudy = {
@@ -19,6 +28,10 @@ export type CaseStudy = {
   heroImage?: string;
   /** For role-based case studies covering multiple systems rather than one product */
   systems?: CaseStudySystem[];
+  /** Lighter-weight systems shown as a compact list rather than full cards */
+  highlights?: CaseStudyHighlight[];
+  /** Heading for the highlights list; defaults to "Additional systems" */
+  highlightsLabel?: string;
   /** Optional override for page <title> / metadata title */
   metaTitle?: string;
   /** Optional override for metadata description */
@@ -33,6 +46,10 @@ export type CaseStudy = {
   architectureDiagram?: string;
   implementationDetails?: string;
   hardestTechnicalIssue?: string;
+  /** For a distinct AI-assisted capability worth its own section */
+  aiDashboards?: string;
+  /** A distinct initiative that ran alongside the main work, e.g. a process/documentation project */
+  parallelInitiative?: { title: string; body: string };
   validationAndErrorHandling?: string[];
   privacyAndDataHandling?: string;
   limitations?: string | string[];

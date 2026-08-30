@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/components/button-link";
-import type { CaseStudy, CaseStudySystem } from "@/types/case-study";
+import type { CaseStudy, CaseStudyHighlight, CaseStudySystem } from "@/types/case-study";
 import type { ReactNode } from "react";
 
 type CaseStudyViewProps = {
@@ -85,26 +85,50 @@ function SystemCard({ system }: { system: CaseStudySystem }) {
         ) : null}
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
-            Before
-          </p>
-          <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)]">{system.before}</p>
+      {system.body && system.body.length > 0 ? (
+        <div className="mt-4 space-y-3 text-sm leading-relaxed text-[var(--muted)]">
+          {system.body.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
         </div>
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
-            After
-          </p>
-          <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)]">{system.after}</p>
+      ) : (
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+              Before
+            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)]">{system.before}</p>
+          </div>
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+              After
+            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)]">{system.after}</p>
+          </div>
         </div>
-      </div>
+      )}
 
       {system.stat ? (
         <p className="mt-4 border-t border-[var(--border)] pt-4 text-sm leading-relaxed text-[var(--text)]">
           {system.stat}
         </p>
       ) : null}
+    </div>
+  );
+}
+
+function HighlightsList({ highlights }: { highlights: CaseStudyHighlight[] }) {
+  return (
+    <div className="mt-4 divide-y divide-[var(--border)] rounded-xl border border-[var(--border)] bg-[var(--panel)]">
+      {highlights.map((highlight) => (
+        <div key={highlight.name} className="p-4 sm:p-5">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <h3 className="text-sm font-semibold tracking-tight">{highlight.name}</h3>
+            <span className="text-xs text-[var(--muted)]">{highlight.source}</span>
+          </div>
+          <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)]">{highlight.purpose}</p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -209,6 +233,16 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
       key: "privacy-and-data-handling",
       title: "Privacy and data handling",
       content: study.privacyAndDataHandling,
+    },
+    {
+      key: "ai-dashboards",
+      title: "AI-built interactive dashboards",
+      content: study.aiDashboards,
+    },
+    {
+      key: "parallel-initiative",
+      title: study.parallelInitiative?.title ?? "",
+      content: study.parallelInitiative?.body,
     },
     {
       key: "limitations",
@@ -320,7 +354,7 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
         </div>
       ) : null}
 
-      {hasProblem || study.systems?.length || sections.length > 0 ? (
+      {hasProblem || study.systems?.length || study.highlights?.length || sections.length > 0 ? (
         <div className="mt-12 space-y-12">
           {hasProblem ? (
             <section aria-labelledby={`section-${problemSection.key}`}>
@@ -336,6 +370,15 @@ export function CaseStudyView({ study }: CaseStudyViewProps) {
 
           {study.systems && study.systems.length > 0 ? (
             <SystemsSection systems={study.systems} />
+          ) : null}
+
+          {study.highlights && study.highlights.length > 0 ? (
+            <section aria-labelledby="section-highlights">
+              <h2 id="section-highlights" className="text-lg font-semibold tracking-tight">
+                {study.highlightsLabel ?? "Additional systems"}
+              </h2>
+              <HighlightsList highlights={study.highlights} />
+            </section>
           ) : null}
 
           {sections.map((section) => (
