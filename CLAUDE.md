@@ -11,6 +11,8 @@ Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Deployed v
 - Content lives in typed data files (src/data/projects.ts, case-studies.ts, bullet-check.ts), not hardcoded in components
 - Anything derivable from `projects.ts` (e.g. "which projects are shipped/live") should be computed via its helpers (`getLiveProjectTitles`, `formatProjectList`), not retyped as a literal string in a component — the hero's "Shipped" stat card and `src/app/opengraph-image.tsx` both consume these so they can't drift out of sync with each other
 - Project cards (src/components/project-card.tsx) render title/status/description first, screenshot second — deliberately swapped from the original image-first order; the divider border sits on top of the image (`border-t`) rather than below it
+- `CaseStudy.systems[]` supports two shapes: the original `before`/`after`/`stat` (short summary) or a `body` array of free-form paragraphs (used when a system's story needs more room — see all four Lifestyle Systems entries). A separate `highlights[]` field renders as a compact list for lighter-weight systems that don't need full-card treatment, and `aiDashboards`/`parallelInitiative` are one-off sections for content that doesn't fit the existing field set. Extend the type rather than force new content into the wrong shape.
+- A PostToolUse hook (`.claude/hooks/check-case-study-slop.cjs`) fires on every edit to `src/data/case-studies.ts` and requires an explicit no-ai-slop pass over the changed fields before the edit is considered done — don't skip it even if the content was already reviewed once.
 - No tests exist in this repo (no Vitest/Jest config or *.test.*/*.spec.* files)
 
 ### Design system
@@ -27,7 +29,7 @@ Hero is a bento-grid layout: a small context line ("Systems Design Engineering �
 **Hero is fragile — confirm before restructuring layout or animation logic.** It went through several iterations to get right. The typewriter rotation list (src/components/hero-typewriter.tsx) is kept deliberately separate from layout/animation code so it's easy to edit alone. It must respect `prefers-reduced-motion` — when set, skip the typing animation and render the first rotation item statically (already implemented, both via matchMedia in the component and a global CSS rule in globals.css).
 
 ### Projects shown
-1. Business Systems, Lifestyle Home Products — In production, featured. Internal Salesforce/Tableau/Apps Script work at a private company, no public repo/demo. No screenshot yet — tracked via `// TODO(Pranav)` in src/data/projects.ts and src/data/case-studies.ts, waiting on a redacted image.
+1. Business Systems, Lifestyle Home Products — In production, featured. Internal Salesforce/Apps Script/Claude work at a private company, no public repo/demo. No screenshot — deliberately left out at Pranav's request (redacted dashboard screenshots were offered and declined), not a TODO. Case study covers a centralized Salesforce OAuth broker, four full-depth systems (Token Broker, User & License Warehouse, Ops Dashboard Pipeline, Cycle Time Warehouse — all 4/4 platforms live, no DaVinci 360), six lighter "highlight" warehouses, a Claude-built interactive-dashboard layer, and a separate accounting-process-documentation initiative. Tableau and DaVinci 360 are fully removed from the narrative — Tableau was deprecated and replaced by a native Salesforce i360 dashboard; DaVinci 360 was dropped from the license/user warehouse's scope entirely. Role stays "Data Analyst" — an "AI Solutions" addition was discussed but deliberately not made pending Pranav confirming with his manager; don't add it without that confirmation.
 2. Bullet Check — Live, featured. Full case study covering architecture, prompt design, the JSON-parsing reliability fix, and an explicit limitations list (no auth, no rate limiting, no schema validation, no tests, non-streaming).
 3. Job Lens — Live, featured. Data-viz app showing skill demand, role breakdowns and top hiring companies extracted from 1,000 real job postings via LLM. Stack: Next.js, TypeScript, Python, OpenAI API, Vercel. Live at joblens-pearl.vercel.app, case study at /projects/job-lens, data in src/data/job-lens.ts.
 
@@ -42,7 +44,7 @@ Don't invent metrics, dates, testimonials, or bio/project details that aren't co
 ### Code health
 - npm run lint: clean
 - npx tsc --noEmit: clean
-- Recent commits: design-taste + accessibility audit fixes, hero rework (name-led identity), AI-slop audit fixes (README rewrite, sitemap fix), Open Graph image added, section-spacing tightened, project-card title/screenshot order swapped, containers widened to max-w-6xl
+- Recent commits: design-taste + accessibility audit fixes, hero rework (name-led identity), AI-slop audit fixes (README rewrite, sitemap fix), Open Graph image added, section-spacing tightened, project-card title/screenshot order swapped, containers widened to max-w-6xl, Lifestyle Systems case study rewritten (Tableau/DaVinci 360 removed, Claude dashboards + accounting SOP project added)
 
 ### Housekeeping
 - desktop.ini is untracked (Windows Explorer artifact) — safe to add to .gitignore
